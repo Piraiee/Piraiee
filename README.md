@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @Piraiee
 - 👀 I’m interested in hiring developers
-- 📫 Reach me at ahmad@thirty3.ch
+- 📫 Reach me at ahmad@piraiee.com
 
 <!---
 Piraiee is a ✨ special ✨ repository because its 'README.md' appears on your GitHub profile.
