@@ -1,0 +1,79 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ContactForm from "../components/ContactForm.astro";
+import DealCard from "../components/DealCard.astro";
+import { deals } from "../data/deals";
+import { posts } from "../data/posts";
+import { site } from "../data/site";
+---
+
+<BaseLayout title="Ahmad Piraiee" description={site.description}>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Warsaw · Startups · Growth</p>
+      <h1>I build exceptional businesses with daring entrepreneurs.</h1>
+      <p>
+        I help founders and ecosystem leaders turn sharp positioning, commercial partnerships,
+        and trusted community into measurable growth.
+      </p>
+      <div class="actions">
+        <a class="button" href="/contact/">Start a conversation</a>
+        <a class="button secondary" href="/deals/">View founder deals</a>
+      </div>
+    </div>
+    <figure class="hero-visual">
+      <img src={site.heroImage} alt="Ahmad Piraiee speaking and working with entrepreneurs" />
+    </figure>
+  </section>
+
+  <section class="proof-band">
+    <span>500+ companies supported</span>
+    <span>Founder partnerships</span>
+    <span>Warsaw startup ecosystem</span>
+    <span>Fintech and growth strategy</span>
+  </section>
+
+  <section class="split-section">
+    <div>
+      <p class="eyebrow">Positioning</p>
+      <h2>Commercial clarity for ambitious teams.</h2>
+    </div>
+    <p>
+      The new piraiee.com is designed around what matters now: credible advisory, startup access,
+      useful founder deals, and a direct path for the right people to get in touch.
+    </p>
+  </section>
+
+  <section class="section-heading">
+    <p class="eyebrow">Deals</p>
+    <h2>Useful offers for operators and founders.</h2>
+  </section>
+  <div class="deal-grid">
+    {deals.slice(0, 4).map((deal) => <DealCard deal={deal} />)}
+  </div>
+
+  <section class="section-heading">
+    <p class="eyebrow">Blog</p>
+    <h2>Signals from European startups and venture.</h2>
+  </section>
+  <div class="post-list">
+    {posts.map((post) => (
+      <a class="post-row" href={`/blog/${post.slug}/`}>
+        <span>{post.category}</span>
+        <strong>{post.title}</strong>
+        <time datetime={post.date}>{new Date(post.date).toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" })}</time>
+      </a>
+    ))}
+  </div>
+
+  <section class="contact-panel">
+    <div>
+      <p class="eyebrow">Contact</p>
+      <h2>Bring the right opportunity.</h2>
+      <p>
+        Use the form for partnerships, startup advisory, deal access, speaking, or press.
+      </p>
+    </div>
+    <ContactForm />
+  </section>
+</BaseLayout>

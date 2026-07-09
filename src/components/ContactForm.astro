@@ -1,0 +1,27 @@
+---
+const topics = ["Startup advisory", "Partnership", "Deal access", "Speaking", "Press", "Other"];
+---
+
+<form class="contact-form" action="/api/lead" method="post">
+  <input type="hidden" name="source" value="piraiee.com" />
+  <label>
+    <span>Name</span>
+    <input name="name" autocomplete="name" required />
+  </label>
+  <label>
+    <span>Email</span>
+    <input name="email" type="email" autocomplete="email" required />
+  </label>
+  <label>
+    <span>Topic</span>
+    <select name="topic" required>
+      {topics.map((topic) => <option value={topic}>{topic}</option>)}
+    </select>
+  </label>
+  <label>
+    <span>Message</span>
+    <textarea name="message" rows="6" required></textarea>
+  </label>
+  <p class="form-note">Submissions are routed to Ahmad's private Google Sheet once the Google Apps Script URL is added in Cloudflare.</p>
+  <button type="submit">Send inquiry</button>
+</form>

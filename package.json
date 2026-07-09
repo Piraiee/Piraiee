@@ -1,0 +1,21 @@
+{
+  "name": "piraiee-com",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro check && ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "astro preview",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name piraiee-com"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/cloudflare": "^12.6.0",
+    "astro": "^5.13.0",
+    "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "wrangler": "^4.30.0"
+  }
+}

@@ -1,0 +1,10 @@
+name = "piraiee-com"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-07-09"
+
+[vars]
+ALLOWED_ORIGIN = "https://piraiee.com"
+
+# Add these in the Cloudflare Pages dashboard, not in git:
+# GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/.../exec"
+# TURNSTILE_SECRET_KEY = "..."

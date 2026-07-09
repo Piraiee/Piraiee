@@ -1,0 +1,19 @@
+---
+import type { Deal } from "../data/deals";
+
+type Props = {
+  deal: Deal;
+};
+
+const { deal } = Astro.props;
+---
+
+<article class="deal-card">
+  <div class="deal-mark" aria-hidden="true">{deal.name.slice(0, 2)}</div>
+  <p class="eyebrow">{deal.category}</p>
+  <h3>{deal.name}</h3>
+  <p class="lead-small">{deal.summary}</p>
+  <p>{deal.details}</p>
+  {deal.code && <p class="code">Code: <strong>{deal.code}</strong></p>}
+  <a class="text-link" href={deal.href}>Explore deal</a>
+</article>

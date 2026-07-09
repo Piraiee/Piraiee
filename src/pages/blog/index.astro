@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { posts } from "../../data/posts";
+---
+
+<BaseLayout title="Blog" description="Startup, venture, and growth notes from Ahmad Piraiee.">
+  <section class="page-hero compact">
+    <p class="eyebrow">Blog</p>
+    <h1>Notes on startups, capital, markets, and ecosystem momentum.</h1>
+  </section>
+  <div class="post-list large">
+    {posts.map((post) => (
+      <a class="post-row" href={`/blog/${post.slug}/`}>
+        <span>{post.category}</span>
+        <strong>{post.title}</strong>
+        <p>{post.excerpt}</p>
+        <time datetime={post.date}>{new Date(post.date).toLocaleDateString("en", { month: "long", day: "numeric", year: "numeric" })}</time>
+      </a>
+    ))}
+  </div>
+</BaseLayout>
