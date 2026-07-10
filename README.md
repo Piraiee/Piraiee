@@ -1,6 +1,6 @@
 # piraiee.com
 
-Independent rebuild of piraiee.com for Cloudflare Pages. This project is intentionally isolated from `yelowapp`, `rootin`, and any other local projects.
+Source for the independent rebuild of [piraiee.com](https://piraiee.com) on Astro and Cloudflare Pages. This project is intentionally isolated from `yelowapp`, `rootin`, and any other local projects.
 
 ## Stack
 
