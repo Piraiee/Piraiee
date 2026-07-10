@@ -1,9 +1,11 @@
 import { posts } from "../data/posts";
+import { deals } from "../data/deals";
 import { site } from "../data/site";
 
-const staticPages = ["", "about/", "startups/", "books/", "deals/", "blog/", "contact/"];
+const staticPages = ["", "about/", "startups/", "books/", "deals/", "blog/"];
 const postPages = posts.map((post) => `blog/${post.slug}/`);
-const urls = [...staticPages, ...postPages];
+const dealPages = deals.map((deal) => `deals/${deal.slug}/`);
+const urls = [...staticPages, ...postPages, ...dealPages];
 
 export function GET() {
   const body = `<?xml version="1.0" encoding="UTF-8"?>

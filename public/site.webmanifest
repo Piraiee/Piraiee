@@ -3,6 +3,14 @@
   "short_name": "Piraiee",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f7f3ec",
-  "theme_color": "#101820"
+  "background_color": "#0B0D10",
+  "theme_color": "#0B0D10",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "1536x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }

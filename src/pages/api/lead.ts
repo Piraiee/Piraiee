@@ -12,12 +12,16 @@ export const POST: APIRoute = async ({ request, locals }) => {
   }
 
   const form = await request.formData();
+  const fields = Object.fromEntries(
+    Array.from(form.entries()).map(([key, value]) => [key, clean(value)])
+  );
   const payload = {
     name: clean(form.get("name")),
     email: clean(form.get("email")),
     topic: clean(form.get("topic")),
     message: clean(form.get("message")),
     source: clean(form.get("source")) || "piraiee.com",
+    fields,
     page: request.headers.get("referer") || "",
     submittedAt: new Date().toISOString()
   };

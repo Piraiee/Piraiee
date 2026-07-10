@@ -1,18 +1,3 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import ContactForm from "../components/ContactForm.astro";
-import { site } from "../data/site";
+return Astro.redirect("/#contact", 301);
 ---
-
-<BaseLayout title="Contact" description="Contact Ahmad Piraiee for startup advisory, partnerships, deals, speaking, and press.">
-  <section class="contact-panel standalone">
-    <div>
-      <p class="eyebrow">Contact</p>
-      <h1>Start with the clearest version of the opportunity.</h1>
-      <p>{site.email}</p>
-      <p>{site.phone}</p>
-      <p>{site.address}</p>
-    </div>
-    <ContactForm />
-  </section>
-</BaseLayout>

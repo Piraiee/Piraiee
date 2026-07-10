@@ -1,9 +1,25 @@
 ---
-const topics = ["Startup advisory", "Partnership", "Deal access", "Speaking", "Press", "Other"];
+const topics = [
+  "Strategic Advisory (long-term)",
+  "Clarity Session (60-90 min)",
+  "Startup Mentoring",
+  "Startup Scouting",
+  "Interim Leadership",
+  "Partnership Opportunity",
+  "Investor or Deal Introduction",
+  "Speaking Engagement",
+  "Startup Competition / Judge",
+  "University Lecture",
+  "Interview / Podcast / Media",
+  "Coffee & Networking",
+  "Something Else"
+];
+
+const timelines = ["This week", "This month", "Next 3 months", "Just exploring"];
 ---
 
 <form class="contact-form" action="/api/lead" method="post">
-  <input type="hidden" name="source" value="piraiee.com" />
+  <input type="hidden" name="source" value="piraiee.com/contact" />
   <label>
     <span>Name</span>
     <input name="name" autocomplete="name" required />
@@ -13,15 +29,24 @@ const topics = ["Startup advisory", "Partnership", "Deal access", "Speaking", "P
     <input name="email" type="email" autocomplete="email" required />
   </label>
   <label>
-    <span>Topic</span>
+    <span>I'm reaching out about...</span>
     <select name="topic" required>
       {topics.map((topic) => <option value={topic}>{topic}</option>)}
     </select>
   </label>
   <label>
-    <span>Message</span>
-    <textarea name="message" rows="6" required></textarea>
+    <span>What outcome are you hoping to achieve?</span>
+    <textarea
+      name="message"
+      rows="5"
+      placeholder="Tell me what you're trying to accomplish or why you'd like to connect."
+      required></textarea>
   </label>
-  <p class="form-note">Submissions are routed to Ahmad's private Google Sheet once the Google Apps Script URL is added in Cloudflare.</p>
-  <button type="submit">Send inquiry</button>
+  <label>
+    <span>Timeline</span>
+    <select name="timeline" required>
+      {timelines.map((timeline) => <option value={timeline}>{timeline}</option>)}
+    </select>
+  </label>
+  <button type="submit">Start the Conversation</button>
 </form>

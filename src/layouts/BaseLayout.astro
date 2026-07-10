@@ -1,5 +1,6 @@
 ---
 import { navItems, site } from "../data/site";
+import SocialIcon from "../components/SocialIcon.astro";
 import "../styles/global.css";
 
 type Props = {
@@ -16,21 +17,13 @@ const {
 
 const pageTitle = title === site.name ? `${site.name} | ${site.domain}` : `${title} | ${site.name}`;
 const canonical = new URL(Astro.url.pathname, site.url).toString();
+const pathname = Astro.url.pathname;
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: site.name,
   url: site.url,
-  email: site.email,
-  telephone: site.phone,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Chmielna 73",
-    addressLocality: "Warsaw",
-    postalCode: "00-801",
-    addressCountry: "PL"
-  },
   sameAs: site.socials.map((item) => item.href),
   jobTitle: "Founder, startup advisor, and marketing strategist"
 };
@@ -43,9 +36,14 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#101820" />
+    <meta name="theme-color" content="#0B0D10" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.domain} />
     <meta property="og:title" content={pageTitle} />
@@ -60,27 +58,65 @@ const jsonLd = {
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-      <a class="brand" href="/" aria-label="Ahmad Piraiee home">
-        <span>Ahmad Piraiee</span>
-      </a>
-      <nav aria-label="Main navigation">
-        {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
-      </nav>
+    <header class="site-header" data-header>
+      <div class="nav-shell">
+        <div class="brand wordmark header-wordmark" aria-label="Piraiee">piraiee.com<span class="registered-mark">®</span></div>
+        <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" data-menu-toggle>
+          <span aria-hidden="true"></span>
+        </button>
+        <nav aria-label="Main navigation" data-nav>
+          {navItems.map((item) => {
+            const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+            return <a href={item.href} aria-current={active ? "page" : undefined}>{item.label}</a>;
+          })}
+        </nav>
+        <div class="nav-actions">
+          <a class="button nav-button" href="/#contact">Contact ↗</a>
+        </div>
+        <div class="mobile-menu-socials" aria-label="Social links">
+          {site.socials.map((item) => <SocialIcon label={item.label} href={item.href} />)}
+        </div>
+      </div>
     </header>
     <main id="main">
       <slot />
     </main>
     <footer class="site-footer">
-      <div>
-        <strong>{site.domain}</strong>
-        <p>{site.email} · {site.phone}</p>
-        <p>{site.address}</p>
-      </div>
-      <div class="footer-links">
-        {site.socials.map((item) => <a href={item.href} rel="me noopener noreferrer">{item.label}</a>)}
+      <div class="footer-line">
+        <div class="brand wordmark" aria-label="Ahmad Piraiee">
+          <picture class="brand-picture">
+            <source media="(min-width: 961px)" srcset="/assets/brand/ahmad-piraiee-full.png" />
+            <img class="brand-symbol" src="/assets/brand/ahmad-piraiee-mark.png" alt="" />
+          </picture>
+          <span class="registered-mark footer-registered-mark">®</span>
+        </div>
+        <p>Startups, capital, communities, and strategic opportunities.</p>
+        <div class="footer-socials">
+          {site.socials.map((item) => <SocialIcon label={item.label} href={item.href} />)}
+        </div>
       </div>
       <p class="copyright">©1998-2026 piraiee.com · all rights reserved</p>
     </footer>
+    <script>
+      const header = document.querySelector("[data-header]");
+      const toggle = document.querySelector("[data-menu-toggle]");
+      const syncHeader = () => header?.classList.toggle("is-scrolled", window.scrollY > 16);
+      syncHeader();
+      window.addEventListener("scroll", syncHeader, { passive: true });
+      const setMenu = (open: boolean) => {
+        header?.classList.toggle("menu-open", open);
+        document.documentElement.classList.toggle("menu-is-open", open);
+        toggle?.setAttribute("aria-expanded", String(open));
+      };
+      toggle?.addEventListener("click", () => {
+        setMenu(!header?.classList.contains("menu-open"));
+      });
+      header?.querySelectorAll("nav a, .nav-actions a").forEach((link) => {
+        link.addEventListener("click", () => setMenu(false));
+      });
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") setMenu(false);
+      });
+    </script>
   </body>
 </html>

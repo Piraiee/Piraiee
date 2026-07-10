@@ -1,24 +1,161 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ClarityModal from "../components/ClarityModal.astro";
+
+const supportAreas = [
+  {
+    title: "Validate the idea",
+    text: "Find out whether the market actually has the problem before building the solution."
+  },
+  {
+    title: "Challenge assumptions",
+    text: "Separate evidence from optimism and identify the blind spots slowing progress."
+  },
+  {
+    title: "Find product-market fit",
+    text: "Focus on customer behavior instead of feature lists."
+  },
+  {
+    title: "Use AI strategically",
+    text: "Leverage AI to accelerate execution without replacing strategic thinking."
+  },
+  {
+    title: "Build the right story",
+    text: "Explain your company so customers, investors, partners, and future employees immediately understand why it matters."
+  },
+  {
+    title: "Connect the right people",
+    text: "Introduce founders to partners, customers, operators, investors, and experts when those introductions create genuine leverage."
+  }
+];
+
+const process = [
+  {
+    title: "Listen",
+    text: "Understand the founder, the market, and the assumptions behind the business."
+  },
+  {
+    title: "Challenge",
+    text: "Pressure-test the idea, identify risks, and remove unnecessary complexity."
+  },
+  {
+    title: "Focus",
+    text: "Prioritize the few decisions that will have the biggest impact."
+  },
+  {
+    title: "Execute",
+    text: "Build with confidence, knowing you're solving the right problem."
+  }
+];
+
+const founderFit = [
+  "are overwhelmed by too many possibilities.",
+  "built something but aren't sure the market wants it.",
+  "are using AI but don't know where it creates real leverage.",
+  "need honest feedback instead of encouragement.",
+  "want practical experience instead of startup theatre.",
+  "value clarity more than another framework."
+];
 ---
 
-<BaseLayout title="Startups" description="Startup advisory, founder support, and ecosystem work by Ahmad Piraiee.">
-  <section class="page-hero compact">
+<BaseLayout title="Startups" description="Startup clarity, founder advisory, and AI-era venture building with Ahmad Piraiee.">
+  <section class="page-hero startup-hero">
     <p class="eyebrow">Startups</p>
-    <h1>Sharper go-to-market, stronger partnerships, better founder signal.</h1>
+    <h1>Building a startup has changed. Most advice hasn't.</h1>
+    <p>
+      AI can generate ideas, write code, build products, and automate execution in hours.
+      That makes building easier, but choosing <strong>what</strong> to build has never
+      been harder.
+    </p>
+    <p>
+      I help founders cut through the noise, validate what matters, and focus on the few
+      decisions that actually determine whether a company succeeds.
+    </p>
+    <div class="actions">
+      <button class="button" type="button" data-clarity-open>Book a Clarity Session</button>
+    </div>
   </section>
-  <section class="cards-grid">
-    <article>
-      <h2>Founder Advisory</h2>
-      <p>Positioning, growth narratives, partnership strategy, and market entry support.</p>
-    </article>
-    <article>
-      <h2>Ecosystem Programs</h2>
-      <p>Community formats, mentor networks, startup showcases, and operator-led events.</p>
-    </article>
-    <article>
-      <h2>Commercial Access</h2>
-      <p>Curated introductions to partners, tools, workspaces, and service providers.</p>
-    </article>
+
+  <section class="split-section startup-statement">
+    <div>
+      <p class="eyebrow">Supporting text</p>
+      <h2>The biggest advantage today isn't building faster.</h2>
+    </div>
+    <p>It's knowing what deserves to be built.</p>
   </section>
+
+  <section class="split-section ruled">
+    <div>
+      <p class="eyebrow">/ 02 / Why founders work with me</p>
+      <h2>From AI-generated ideas to market-validated businesses.</h2>
+    </div>
+    <div class="story-copy">
+      <p>Generative AI has compressed execution from months to days.</p>
+      <p>But product-market fit still can't be automated.</p>
+      <p>
+        Most founders don't fail because they can't build. They fail because they build
+        something nobody truly needs.
+      </p>
+      <p>
+        After mentoring more than 2,500 founders and helping create startup programs for
+        organizations including MIT Enterprise Forum, PwC, mBank, and Venture Cafe, I have
+        learned that the highest-leverage skill isn't coding.
+      </p>
+      <p><strong>It's judgment.</strong></p>
+    </div>
+  </section>
+
+  <section class="section-heading compact-heading">
+    <p class="eyebrow">/ 03 / What I help with</p>
+    <h2>Sharper decisions before costly execution.</h2>
+  </section>
+  <section class="cards-grid editorial startup-capabilities">
+    {supportAreas.map((item) => (
+      <article>
+        <h2>{item.title}</h2>
+        <p>{item.text}</p>
+      </article>
+    ))}
+  </section>
+
+  <section class="split-section ruled section-intro">
+    <div>
+      <p class="eyebrow">/ 04 / How we work</p>
+      <h2>Clarity first. Execution second.</h2>
+    </div>
+  </section>
+  <section class="process-list">
+    {process.map((item, index) => (
+      <article>
+        <span>{String(index + 1).padStart(2, "0")}</span>
+        <h3>{item.title}</h3>
+        <p>{item.text}</p>
+      </article>
+    ))}
+  </section>
+
+  <section class="split-section ruled startup-fit">
+    <div>
+      <p class="eyebrow">/ 05 / Who this is for</p>
+      <h2>This is for founders who...</h2>
+    </div>
+    <ul class="check-list">
+      {founderFit.map((item) => <li>{item}</li>)}
+    </ul>
+  </section>
+
+  <section class="dark-cta">
+    <div>
+      <p class="eyebrow">/ Startup clarity</p>
+      <h2>The most expensive mistake isn't building slowly. It's building the wrong thing quickly.</h2>
+      <p>
+        Let's make sure you're solving the right problem before investing months of your time.
+      </p>
+    </div>
+    <div class="dark-cta-actions">
+      <button class="button light-button" type="button" data-clarity-open>Book a Clarity Session</button>
+    </div>
+  </section>
+
+  <ClarityModal />
 </BaseLayout>

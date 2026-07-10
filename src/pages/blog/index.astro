@@ -1,21 +1,203 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { posts } from "../../data/posts";
+import { posts, writingCategories } from "../../data/posts";
+
+const formatDate = (date: string) => {
+  const value = new Date(date + "T00:00:00");
+  return value
+    .toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
+    .toUpperCase();
+};
 ---
 
-<BaseLayout title="Blog" description="Startup, venture, and growth notes from Ahmad Piraiee.">
-  <section class="page-hero compact">
-    <p class="eyebrow">Blog</p>
+<BaseLayout title="Writing" description="Startup, venture, and growth notes from Ahmad Piraiee.">
+  <aside class="writing-rail" aria-hidden="true">
+    <div class="writing-rail-track" data-writing-rail-track>
+      {Array.from({ length: 42 }).map((_, index) => <span data-rail-step={index}></span>)}
+    </div>
+    <div class="writing-rail-preview" data-writing-rail-preview hidden>
+      <strong></strong>
+      <span></span>
+    </div>
+  </aside>
+
+  <section class="page-hero writing-hero">
+    <p class="eyebrow">Writing</p>
     <h1>Notes on startups, capital, markets, and ecosystem momentum.</h1>
+    <p>
+      Short, high-signal observations on European technology, venture capital, founder narratives,
+      and the commercial moves that make ecosystems compound.
+    </p>
   </section>
-  <div class="post-list large">
+
+  <section class="writing-controls" aria-label="Search and filter writings">
+    <div class="writing-search">
+      <label for="writing-search-input">Search writings</label>
+      <input id="writing-search-input" type="search" placeholder="Search by company, topic, market, or keyword" autocomplete="off" />
+    </div>
+    <div class="writing-filter-head">
+      <p class="eyebrow">Browse by category</p>
+      <span id="writing-result-count">{posts.length} writings</span>
+    </div>
+    <div class="writing-categories" role="list" aria-label="Writing categories">
+      <button class="is-active" type="button" data-category="All">All</button>
+      {writingCategories.map((category) => (
+        <button type="button" data-category={category}>{category}</button>
+      ))}
+    </div>
+  </section>
+
+  <div class="post-list large" id="writing-results" data-total={posts.length}>
     {posts.map((post) => (
-      <a class="post-row" href={`/blog/${post.slug}/`}>
+      <a
+        class="post-row"
+        href={`/blog/${post.slug}/`}
+        data-category={post.category}
+        data-title={post.title}
+        data-date={formatDate(post.date)}
+        data-search={`${post.title} ${post.category} ${post.excerpt} ${post.content.replace(/<[^>]+>/g, " ")}`.toLowerCase()}
+      >
         <span>{post.category}</span>
         <strong>{post.title}</strong>
         <p>{post.excerpt}</p>
-        <time datetime={post.date}>{new Date(post.date).toLocaleDateString("en", { month: "long", day: "numeric", year: "numeric" })}</time>
+        <time datetime={post.date}>{formatDate(post.date)}</time>
       </a>
     ))}
   </div>
+  <p class="writing-empty" id="writing-empty" hidden>No writings match this search yet.</p>
+
+  <script>
+    const searchInput = document.querySelector<HTMLInputElement>("#writing-search-input");
+    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>(".writing-categories button"));
+    const rows = Array.from(document.querySelectorAll<HTMLElement>(".post-row"));
+    const count = document.querySelector<HTMLElement>("#writing-result-count");
+    const empty = document.querySelector<HTMLElement>("#writing-empty");
+    const rail = document.querySelector<HTMLElement>(".writing-rail");
+    const railTrack = document.querySelector<HTMLElement>("[data-writing-rail-track]");
+    const railPreview = document.querySelector<HTMLElement>("[data-writing-rail-preview]");
+    const railPreviewTitle = railPreview?.querySelector<HTMLElement>("strong");
+    const railPreviewMeta = railPreview?.querySelector<HTMLElement>("span");
+    const railSteps = Array.from(document.querySelectorAll<HTMLElement>("[data-rail-step]"));
+    let activeCategory = "All";
+    let visibleRows = rows;
+    let isDraggingRail = false;
+
+    const pluralize = (value: number) => value + " " + (value === 1 ? "writing" : "writings");
+
+    const setRailPreview = (row?: HTMLElement, step?: HTMLElement) => {
+      if (!railPreview || !railPreviewTitle || !railPreviewMeta || !row) {
+        if (railPreview) railPreview.hidden = true;
+        return;
+      }
+      const anchor = step || railSteps.find((item) => item.classList.contains("is-active"));
+      const anchorRect = anchor?.getBoundingClientRect();
+      const anchorY = anchorRect ? anchorRect.top + anchorRect.height / 2 : window.innerHeight / 2;
+      railPreviewTitle.textContent = row.dataset.title || row.querySelector("strong")?.textContent || "Writing";
+      railPreviewMeta.textContent = (row.dataset.category || "Writing") + " · " + (row.dataset.date || "");
+      railPreview.style.top = Math.min(window.innerHeight - 118, Math.max(92, anchorY)) + "px";
+      railPreview.hidden = false;
+    };
+
+    const getRailIndex = (clientY: number) => {
+      if (!railTrack || visibleRows.length === 0) return -1;
+      const rect = railTrack.getBoundingClientRect();
+      const progress = Math.min(1, Math.max(0, (clientY - rect.top) / rect.height));
+      return Math.min(visibleRows.length - 1, Math.max(0, Math.round(progress * (visibleRows.length - 1))));
+    };
+
+    const updateRail = () => {
+      if (!railSteps.length || window.innerWidth < 1180) return;
+      const candidates = visibleRows.length ? visibleRows : rows;
+      const viewportAnchor = window.scrollY + window.innerHeight * 0.42;
+      let activeRowIndex = 0;
+      let closest = Number.POSITIVE_INFINITY;
+
+      candidates.forEach((row, index) => {
+        const distance = Math.abs(row.offsetTop - viewportAnchor);
+        if (distance < closest) {
+          closest = distance;
+          activeRowIndex = index;
+        }
+      });
+
+      const activeStep = candidates.length <= 1
+        ? 0
+        : Math.round((activeRowIndex / (candidates.length - 1)) * (railSteps.length - 1));
+      railSteps.forEach((step, index) => step.classList.toggle("is-active", index === activeStep));
+      if (isDraggingRail) setRailPreview(candidates[activeRowIndex], railSteps[activeStep]);
+    };
+
+    const scrubTo = (clientY: number, behavior: ScrollBehavior = "auto") => {
+      const index = getRailIndex(clientY);
+      const row = visibleRows[index];
+      if (!row) return;
+      row.scrollIntoView({ block: "center", behavior });
+      const stepIndex = visibleRows.length <= 1
+        ? 0
+        : Math.round((index / (visibleRows.length - 1)) * (railSteps.length - 1));
+      railSteps.forEach((step, itemIndex) => step.classList.toggle("is-active", itemIndex === stepIndex));
+      setRailPreview(row, railSteps[stepIndex]);
+    };
+
+    const applyFilters = () => {
+      const query = searchInput?.value.trim().toLowerCase() || "";
+      visibleRows = [];
+
+      rows.forEach((row) => {
+        const categoryMatch = activeCategory === "All" || row.dataset.category === activeCategory;
+        const queryMatch = !query || (row.dataset.search || "").includes(query);
+        const shouldShow = Boolean(categoryMatch && queryMatch);
+        row.hidden = !shouldShow;
+        if (shouldShow) visibleRows.push(row);
+      });
+
+      if (count) count.textContent = pluralize(visibleRows.length);
+      if (empty) empty.hidden = visibleRows.length !== 0;
+      setRailPreview();
+      updateRail();
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeCategory = button.dataset.category || "All";
+        buttons.forEach((item) => item.classList.toggle("is-active", item === button));
+        applyFilters();
+      });
+    });
+
+    searchInput?.addEventListener("input", applyFilters);
+
+    railTrack?.addEventListener("pointerdown", (event) => {
+      if (window.innerWidth < 1180) return;
+      isDraggingRail = true;
+      rail?.classList.add("is-dragging");
+      railTrack.setPointerCapture(event.pointerId);
+      scrubTo(event.clientY);
+    });
+
+    railTrack?.addEventListener("pointermove", (event) => {
+      if (window.innerWidth < 1180) return;
+      const index = getRailIndex(event.clientY);
+      const stepIndex = visibleRows.length <= 1
+        ? 0
+        : Math.round((index / (visibleRows.length - 1)) * (railSteps.length - 1));
+      setRailPreview(visibleRows[index], railSteps[stepIndex]);
+      if (isDraggingRail) scrubTo(event.clientY);
+    });
+
+    railTrack?.addEventListener("pointerleave", () => {
+      if (!isDraggingRail) setRailPreview();
+    });
+
+    railTrack?.addEventListener("pointerup", (event) => {
+      isDraggingRail = false;
+      rail?.classList.remove("is-dragging");
+      railTrack.releasePointerCapture(event.pointerId);
+      window.setTimeout(() => setRailPreview(), 240);
+    });
+
+    window.addEventListener("scroll", updateRail, { passive: true });
+    window.addEventListener("resize", updateRail);
+    applyFilters();
+  </script>
 </BaseLayout>

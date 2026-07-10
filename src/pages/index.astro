@@ -1,63 +1,180 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ClarityModal from "../components/ClarityModal.astro";
 import ContactForm from "../components/ContactForm.astro";
-import DealCard from "../components/DealCard.astro";
 import { deals } from "../data/deals";
 import { posts } from "../data/posts";
-import { site } from "../data/site";
+import { partnerLogos, site } from "../data/site";
+
+const homepageDealTitles: Record<string, [string, string]> = {
+  "Bolt for Business": ["Bolt for", "Business"],
+  "CIC Warsaw": ["CIC", "Warsaw"],
+  PandaDoc: ["Panda", "Doc"],
+  SocialBee: ["Social", "Bee"]
+};
+
+const getHomepageDealTitle = (name: string): [string, string] =>
+  homepageDealTitles[name] ?? [name, "Offer"];
+
+const homeBooks = [
+  { title: "Outlive", author: "Peter Attia", year: "2023", href: "https://www.goodreads.com/book/show/61153739-outlive" },
+  { title: "The Creative Act", author: "Rick Rubin", year: "2023", href: "https://www.goodreads.com/book/show/60965426-the-creative-act" },
+  { title: "Think Again", author: "Adam Grant", year: "2021", href: "https://www.goodreads.com/book/show/55539565-think-again" },
+  { title: "The Elephant in the Brain", author: "Kevin Simler & Robin Hanson", year: "2018", href: "https://www.goodreads.com/book/show/28820444-the-elephant-in-the-brain" },
+  { title: "Noise", author: "Daniel Kahneman, Olivier Sibony & Cass R. Sunstein", year: "2021", href: "https://www.goodreads.com/book/show/55339408-noise" }
+];
 ---
 
 <BaseLayout title="Ahmad Piraiee" description={site.description}>
-  <section class="hero">
-    <div class="hero-copy">
-      <p class="eyebrow">Warsaw · Startups · Growth</p>
-      <h1>I build exceptional businesses with daring entrepreneurs.</h1>
-      <p>
-        I help founders and ecosystem leaders turn sharp positioning, commercial partnerships,
-        and trusted community into measurable growth.
-      </p>
-      <div class="actions">
-        <a class="button" href="/contact/">Start a conversation</a>
-        <a class="button secondary" href="/deals/">View founder deals</a>
+  <div class="home-first-screen">
+    <section class="hero syndicate-hero">
+      <div class="hero-copy">
+        <h1>Turn unclear ideas into executable direction.</h1>
+        <p>
+          I help founders, companies, and innovation teams understand what they are really
+          building, whether the market wants it, and what to do next.
+        </p>
+        <p>
+          In one focused session, we cut through noise, test the logic, expose weak assumptions,
+          and shape the idea without stripping away what makes it unique.
+        </p>
+        <p class="hero-note">Startup speed. Corporate judgment. No innovation theater.</p>
+        <div class="actions">
+          <button class="button" type="button" data-clarity-open>Book a Clarity Session</button>
+          <a class="button secondary" href="#how-i-work">See how I work</a>
+        </div>
       </div>
-    </div>
-    <figure class="hero-visual">
-      <img src={site.heroImage} alt="Ahmad Piraiee speaking and working with entrepreneurs" />
-    </figure>
-  </section>
+    </section>
 
-  <section class="proof-band">
-    <span>500+ companies supported</span>
-    <span>Founder partnerships</span>
-    <span>Warsaw startup ecosystem</span>
-    <span>Fintech and growth strategy</span>
-  </section>
+    <section class="metric-band stat-card">
+      <div>
+        <div class="metric-content">
+          <strong>95K+</strong>
+          <span>Qualified contacts</span>
+        </div>
+      </div>
+      <div>
+        <div class="metric-content">
+          <strong>1K+</strong>
+          <span>Organized events</span>
+        </div>
+      </div>
+      <div>
+        <div class="metric-content">
+          <strong>2.5K+</strong>
+          <span>Mentored startups</span>
+        </div>
+      </div>
+    </section>
 
-  <section class="split-section">
-    <div>
-      <p class="eyebrow">Positioning</p>
-      <h2>Commercial clarity for ambitious teams.</h2>
-    </div>
-    <p>
-      The new piraiee.com is designed around what matters now: credible advisory, startup access,
-      useful founder deals, and a direct path for the right people to get in touch.
-    </p>
-  </section>
-
-  <section class="section-heading">
-    <p class="eyebrow">Deals</p>
-    <h2>Useful offers for operators and founders.</h2>
-  </section>
-  <div class="deal-grid">
-    {deals.slice(0, 4).map((deal) => <DealCard deal={deal} />)}
+    <section class="trusted-strip">
+      <p>Trusted ecosystem relationships</p>
+      <div class="trusted-logos">
+        {partnerLogos.map((logo) => <img src={logo.src} alt={logo.label} />)}
+      </div>
+    </section>
   </div>
 
-  <section class="section-heading">
-    <p class="eyebrow">Blog</p>
+  <section class="split-section ruled section-intro" id="how-i-work">
+    <div>
+      <h2>A clear path from uncertainty to execution.</h2>
+    </div>
+  </section>
+
+  <section class="process-list">
+    <article>
+      <span>01</span>
+      <h3>Understand</h3>
+      <p>Every engagement starts by understanding your business, not applying a framework. We identify the real challenge, the constraints, and what success actually looks like.</p>
+    </article>
+    <article>
+      <span>02</span>
+      <h3>Simplify</h3>
+      <p>I remove noise, challenge assumptions, and connect the dots. Complex problems become clear priorities with a practical path forward.</p>
+    </article>
+    <article>
+      <span>03</span>
+      <h3>Build</h3>
+      <p>Whether it's a strategy, AI workflow, innovation program, product, or team, we build what moves the business, not what looks good in a presentation.</p>
+    </article>
+    <article>
+      <span>04</span>
+      <h3>Transfer</h3>
+      <p>The goal isn't to create dependency. I leave behind systems, knowledge, and capabilities so your team can continue without me.</p>
+    </article>
+  </section>
+
+  <section class="split-section about-accordion">
+    <div>
+      <p class="eyebrow">/ 01 / About</p>
+      <h2>Turning uncertainty into execution.</h2>
+      <p>
+        I help founders, companies, and innovation teams understand what they're really building,
+        validate what matters, and create the systems to move faster without losing what makes
+        them unique.
+      </p>
+    </div>
+    <div class="accordion-list">
+      <details open>
+        <summary>Who is Ahmad Piraiee?</summary>
+        <p>An entrepreneur, interim strategist, and execution partner helping organizations navigate complex change, from venture creation and AI adoption to innovation, growth, and business transformation.</p>
+      </details>
+      <details>
+        <summary>What does he help with?</summary>
+        <p>Turning ideas into execution. I help validate markets, challenge assumptions, simplify complexity, design business models, build innovation capabilities, and identify where AI creates real value, not just automation.</p>
+      </details>
+      <details>
+        <summary>Where does the work sit?</summary>
+        <p>Between startup speed and corporate discipline. I work where organizations have the ambition to move but need external capability, fresh perspective, and experienced execution to make it happen.</p>
+      </details>
+      <details>
+        <summary>How does an engagement start?</summary>
+        <p>With clarity. Every engagement begins by understanding the real challenge, not the symptoms. Together we define priorities, remove uncertainty, and build a practical roadmap for execution.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="split-section ruled home-startups-section">
+    <div>
+      <p class="eyebrow">/ 02 / Startups</p>
+      <h2>Clarity for founders building in the AI era.</h2>
+    </div>
+    <div>
+      <p>Building is faster than ever. The hard part is still choosing what deserves to be built, validating what matters, and focusing on the decisions that determine whether a company can become real.</p>
+      <a class="text-link" href="/startups/">Explore startup work</a>
+    </div>
+  </section>
+
+  <section class="section-heading compact-heading">
+    <p class="eyebrow">/ 03 / Deals</p>
+    <h2>Useful offers for operators and founders.</h2>
+  </section>
+  <div class="deal-grid home-deal-grid">
+    {
+      deals.slice(0, 4).map((deal) => {
+        const [lineOne, lineTwo] = getHomepageDealTitle(deal.name);
+        return (
+          <article class="home-deal-card">
+            <span>{deal.category}</span>
+            <h3>
+              <span>{lineOne}</span>
+              <span>{lineTwo}</span>
+            </h3>
+          </article>
+        );
+      })
+    }
+  </div>
+  <div class="section-actions home-section-action">
+    <a class="button secondary" href="/deals/">Explore deals</a>
+  </div>
+
+  <section class="section-heading compact-heading">
+    <p class="eyebrow">/ 04 / Writing</p>
     <h2>Signals from European startups and venture.</h2>
   </section>
-  <div class="post-list">
-    {posts.map((post) => (
+  <div class="post-list home-post-list">
+    {posts.slice(0, 4).map((post) => (
       <a class="post-row" href={`/blog/${post.slug}/`}>
         <span>{post.category}</span>
         <strong>{post.title}</strong>
@@ -65,15 +182,56 @@ import { site } from "../data/site";
       </a>
     ))}
   </div>
+  <div class="section-actions writing-section-action">
+    <a class="button secondary" href="/blog/">Explore writing</a>
+  </div>
 
-  <section class="contact-panel">
+  <section class="section-heading compact-heading">
+    <p class="eyebrow">/ 05 / Reading</p>
+    <h2>Books that shaped my thinking.</h2>
+  </section>
+  <section class="book-list home-book-list" aria-label="Selected reading">
+    {homeBooks.map((book) => (
+      <article class="book-row">
+        <div>
+          <h2>{book.title}</h2>
+          <p>{book.author}</p>
+          <time datetime={book.year}>{book.year}</time>
+        </div>
+        <a href={book.href} target="_blank" rel="noreferrer">Read</a>
+      </article>
+    ))}
+  </section>
+  <div class="section-actions reading-section-action">
+    <a class="button secondary" href="/books/">Explore reading</a>
+  </div>
+
+  <section class="dark-cta">
+    <div>
+      <p class="eyebrow">/ Advisory</p>
+      <h2>Turn uncertainty into your competitive advantage.</h2>
+      <p>
+        The biggest business risks rarely come from poor execution, they come from solving the
+        wrong problem. I help founders and organizations find clarity, validate what matters,
+        and move forward with confidence.
+      </p>
+    </div>
+    <div class="dark-cta-actions">
+      <button class="button light-button" type="button" data-clarity-open>Schedule a Clarity Session</button>
+    </div>
+  </section>
+
+  <section class="contact-panel home-contact" id="contact">
     <div>
       <p class="eyebrow">Contact</p>
-      <h2>Bring the right opportunity.</h2>
+      <h2>Let's build something worthwhile.</h2>
       <p>
-        Use the form for partnerships, startup advisory, deal access, speaking, or press.
+        Whether you're looking for strategic clarity, an advisor, a speaker, or simply want to
+        explore an opportunity, start the conversation here.
       </p>
     </div>
     <ContactForm />
   </section>
+
+  <ClarityModal />
 </BaseLayout>

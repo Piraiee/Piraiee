@@ -1,24 +1,34 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import DealCard from "../components/DealCard.astro";
-import ContactForm from "../components/ContactForm.astro";
 import { deals } from "../data/deals";
 ---
 
 <BaseLayout title="Deals" description="Curated startup and operator deals from Ahmad Piraiee.">
-  <section class="page-hero compact">
-    <p class="eyebrow">Deals</p>
+  <section class="page-hero deals-hero">
+    <p class="eyebrow">/ Deals</p>
     <h1>Curated offers for founders, operators, and startup teams.</h1>
+    <p>
+      Useful partner access, software advantages, workspace introductions, and operator tools
+      selected for teams building with limited time and real constraints.
+    </p>
   </section>
-  <div class="deal-grid">
-    {deals.map((deal) => <DealCard deal={deal} />)}
-  </div>
-  <section class="contact-panel">
-    <div>
-      <p class="eyebrow">Need access?</p>
-      <h2>Ask for the right introduction.</h2>
-      <p>Some partner offers need a manual intro or eligibility check.</p>
-    </div>
-    <ContactForm />
+
+  <section class="deal-list" aria-label="Curated deals">
+    {deals.map((deal) => {
+      const external = deal.href.startsWith("http");
+
+      return (
+        <article class="deal-row">
+          <div>
+            <div class="deal-row-head">
+              <h2>{deal.name}</h2>
+              <p>{deal.summary}</p>
+            </div>
+            <p class="deal-row-description">{deal.details}</p>
+          </div>
+          <a href={deal.href} target={external ? "_blank" : undefined} rel={external ? "noreferrer" : undefined}>Claim</a>
+        </article>
+      );
+    })}
   </section>
 </BaseLayout>

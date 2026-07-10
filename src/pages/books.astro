@@ -1,16 +1,102 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const books = [
+  {
+    title: "Outlive",
+    author: "Peter Attia with Bill Gifford",
+    year: "2023",
+    href: "https://www.goodreads.com/book/show/61153739-outlive"
+  },
+  {
+    title: "The Little Prince",
+    author: "Antoine de Saint-Exupery",
+    year: "1943",
+    href: "https://www.goodreads.com/book/show/157993.The_Little_Prince"
+  },
+  {
+    title: "The Hitchhiker's Guide to the Galaxy",
+    author: "Douglas Adams",
+    year: "1979",
+    href: "https://www.goodreads.com/book/show/11.The_Hitchhiker_s_Guide_to_the_Galaxy"
+  },
+  {
+    title: "The Creative Act",
+    author: "Rick Rubin",
+    year: "2023",
+    href: "https://www.goodreads.com/book/show/60965426-the-creative-act"
+  },
+  {
+    title: "The Ministry for the Future",
+    author: "Kim Stanley Robinson",
+    year: "2020",
+    href: "https://www.goodreads.com/book/show/50998056-the-ministry-for-the-future"
+  },
+  {
+    title: "Think Again",
+    author: "Adam Grant",
+    year: "2021",
+    href: "https://www.goodreads.com/book/show/55539565-think-again"
+  },
+  {
+    title: "The Alignment Problem",
+    author: "Brian Christian",
+    year: "2020",
+    href: "https://www.goodreads.com/book/show/50489349-the-alignment-problem"
+  },
+  {
+    title: "The Elephant in the Brain",
+    author: "Kevin Simler and Robin Hanson",
+    year: "2017",
+    href: "https://www.goodreads.com/book/show/28820444-the-elephant-in-the-brain"
+  },
+  {
+    title: "Noise",
+    author: "Daniel Kahneman, Olivier Sibony, and Cass R. Sunstein",
+    year: "2021",
+    href: "https://www.goodreads.com/book/show/55339408-noise"
+  },
+  {
+    title: "Numbers Don't Lie",
+    author: "Vaclav Smil",
+    year: "2020",
+    href: "https://www.goodreads.com/book/show/53916147-numbers-don-t-lie"
+  },
+  {
+    title: "How the World Really Works",
+    author: "Vaclav Smil",
+    year: "2022",
+    href: "https://www.goodreads.com/book/show/56587388-how-the-world-really-works"
+  },
+  {
+    title: "The God Delusion",
+    author: "Richard Dawkins",
+    year: "2006",
+    href: "https://www.goodreads.com/book/show/14743.The_God_Delusion"
+  }
+];
 ---
 
-<BaseLayout title="Books" description="Books, reading notes, and ideas that shape Ahmad Piraiee's work.">
-  <section class="page-hero compact">
-    <p class="eyebrow">Books</p>
-    <h1>Reading for builders, strategists, and curious operators.</h1>
-  </section>
-  <section class="content-section">
+<BaseLayout title="Reading" description="Books that shape Ahmad Piraiee's thinking on startups, AI, strategy, technology, and human behavior.">
+  <section class="page-hero books-hero">
+    <p class="eyebrow">/ Reading</p>
+    <h1>Books that shaped my thinking.</h1>
     <p>
-      This section is ready for curated books, reading lists, and notes. It can be powered by simple
-      Markdown files so new recommendations are easy to publish without a CMS bill.
+      The ideas, mental models, and perspectives that continue to influence how I approach
+      startups, AI, strategy, technology, and human behavior.
     </p>
+  </section>
+
+  <section class="book-list" aria-label="Reading list">
+    {books.map((book) => (
+      <article class="book-row">
+        <div>
+          <h2>{book.title}</h2>
+          <p>{book.author}</p>
+          <time datetime={book.year}>{book.year}</time>
+        </div>
+        <a href={book.href} target="_blank" rel="noreferrer">Read</a>
+      </article>
+    ))}
   </section>
 </BaseLayout>

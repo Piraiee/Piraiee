@@ -1,0 +1,124 @@
+---
+const clarityRoles = [
+  "Founder / startup",
+  "Corporate innovation team",
+  "Investor / fund",
+  "Accelerator / ecosystem organization",
+  "Other"
+];
+
+const clarityStages = ["Idea", "MVP", "Early users", "Revenue", "Scaling", "Corporate initiative"];
+const unclearAreas = [
+  "Market fit",
+  "Business model",
+  "Positioning",
+  "Go-to-market",
+  "Product direction",
+  "AI / automation opportunity",
+  "Team / execution",
+  "Other"
+];
+const budgetOptions = ["Yes", "Not yet", "I am exploring"];
+const nextSteps = [
+  "30-minute clarity call",
+  "Interim / advisory discussion",
+  "Workshop / team session",
+  "Not sure yet"
+];
+---
+
+<dialog class="clarity-modal" data-clarity-modal aria-labelledby="clarity-title">
+  <button class="modal-close" type="button" data-clarity-close aria-label="Close clarity session form">×</button>
+  <div class="modal-copy">
+    <p class="eyebrow">Clarity Session Request</p>
+    <h2 id="clarity-title">Let's see if I can help.</h2>
+  </div>
+  <form class="contact-form clarity-form" action="/api/lead" method="post">
+    <input type="hidden" name="source" value="piraiee.com/clarity-session" />
+    <input type="hidden" name="topic" value="Clarity Session Request" />
+    <label>
+      <span>Your name</span>
+      <input name="name" autocomplete="name" required />
+    </label>
+    <label>
+      <span>Email</span>
+      <input name="email" type="email" autocomplete="email" required />
+    </label>
+    <label>
+      <span>Company / project name</span>
+      <input name="company" autocomplete="organization" />
+    </label>
+    <label>
+      <span>Website or LinkedIn</span>
+      <input name="website_or_linkedin" type="url" inputmode="url" />
+    </label>
+    <label>
+      <span>Which best describes you?</span>
+      <select name="role" required>
+        {clarityRoles.map((item) => <option value={item}>{item}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>What are you trying to figure out right now?</span>
+      <textarea name="message" rows="4" required></textarea>
+    </label>
+    <label>
+      <span>What stage are you at?</span>
+      <select name="stage" required>
+        {clarityStages.map((item) => <option value={item}>{item}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>What feels unclear?</span>
+      <select name="unclear_area" required>
+        {unclearAreas.map((item) => <option value={item}>{item}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>What would make this conversation useful for you?</span>
+      <textarea name="useful_outcome" rows="4"></textarea>
+    </label>
+    <label>
+      <span>Do you have budget or authority to act on the outcome?</span>
+      <select name="budget_authority" required>
+        {budgetOptions.map((item) => <option value={item}>{item}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>Preferred next step</span>
+      <select name="preferred_next_step" required>
+        {nextSteps.map((item) => <option value={item}>{item}</option>)}
+      </select>
+    </label>
+    <button type="submit">Send request</button>
+  </form>
+</dialog>
+
+<script>
+  const modal = document.querySelector("[data-clarity-modal]");
+  const openButtons = document.querySelectorAll("[data-clarity-open]");
+  const closeButton = document.querySelector("[data-clarity-close]");
+
+  openButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (modal instanceof HTMLDialogElement) {
+        modal.showModal();
+        document.documentElement.classList.add("modal-open");
+      }
+    });
+  });
+
+  closeButton?.addEventListener("click", () => {
+    if (modal instanceof HTMLDialogElement) {
+      modal.close();
+      document.documentElement.classList.remove("modal-open");
+    }
+  });
+
+  modal?.addEventListener("close", () => document.documentElement.classList.remove("modal-open"));
+  modal?.addEventListener("click", (event) => {
+    if (event.target === modal && modal instanceof HTMLDialogElement) {
+      modal.close();
+    }
+  });
+</script>
