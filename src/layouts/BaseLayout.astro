@@ -60,7 +60,7 @@ const jsonLd = {
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header" data-header>
       <div class="nav-shell">
-        <div class="brand wordmark header-wordmark" aria-label="Piraiee">piraiee.com<span class="registered-mark">®</span></div>
+        <div class="brand wordmark header-wordmark" aria-label="Piraiee">piraiee.com</div>
         <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" data-menu-toggle>
           <span aria-hidden="true"></span>
         </button>
@@ -83,13 +83,6 @@ const jsonLd = {
     </main>
     <footer class="site-footer">
       <div class="footer-line">
-        <div class="brand wordmark" aria-label="Ahmad Piraiee">
-          <picture class="brand-picture">
-            <source media="(min-width: 961px)" srcset="/assets/brand/ahmad-piraiee-full.png" />
-            <img class="brand-symbol" src="/assets/brand/ahmad-piraiee-mark.png" alt="" />
-          </picture>
-          <span class="registered-mark footer-registered-mark">®</span>
-        </div>
         <p>Startups, capital, communities, and strategic opportunities.</p>
         <div class="footer-socials">
           {site.socials.map((item) => <SocialIcon label={item.label} href={item.href} />)}

@@ -78,7 +78,6 @@ const founderFit = [
 
   <section class="split-section startup-statement">
     <div>
-      <p class="eyebrow">Supporting text</p>
       <h2>The biggest advantage today isn't building faster.</h2>
     </div>
     <p>It's knowing what deserves to be built.</p>
@@ -101,7 +100,7 @@ const founderFit = [
         organizations including MIT Enterprise Forum, PwC, mBank, and Venture Cafe, I have
         learned that the highest-leverage skill isn't coding.
       </p>
-      <p><strong>It's judgment.</strong></p>
+      <p><strong>It's critical thinking.</strong></p>
     </div>
   </section>
 
@@ -109,10 +108,11 @@ const founderFit = [
     <p class="eyebrow">/ 03 / What I help with</p>
     <h2>Sharper decisions before costly execution.</h2>
   </section>
-  <section class="cards-grid editorial startup-capabilities">
-    {supportAreas.map((item) => (
+  <section class="process-list startup-support-list">
+    {supportAreas.map((item, index) => (
       <article>
-        <h2>{item.title}</h2>
+        <span>{String(index + 1).padStart(2, "0")}</span>
+        <h3>{item.title}</h3>
         <p>{item.text}</p>
       </article>
     ))}
@@ -148,9 +148,6 @@ const founderFit = [
     <div>
       <p class="eyebrow">/ Startup clarity</p>
       <h2>The most expensive mistake isn't building slowly. It's building the wrong thing quickly.</h2>
-      <p>
-        Let's make sure you're solving the right problem before investing months of your time.
-      </p>
     </div>
     <div class="dark-cta-actions">
       <button class="button light-button" type="button" data-clarity-open>Book a Clarity Session</button>

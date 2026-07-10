@@ -150,15 +150,6 @@ textarea {
   text-transform: none;
 }
 
-.registered-mark {
-  display: inline-block;
-  font-size: 0.62em;
-  line-height: 1;
-  margin-left: 2px;
-  position: relative;
-  top: -0.48em;
-}
-
 .brand-picture {
   display: block;
   line-height: 0;
@@ -169,24 +160,6 @@ textarea {
   object-fit: contain;
   object-position: left center;
   width: 150px;
-}
-
-.footer-line .brand {
-  color: var(--muted);
-  position: relative;
-}
-
-.footer-line .brand-symbol {
-  height: 24px;
-  opacity: 0.82;
-  width: 96px;
-}
-
-.footer-registered-mark {
-  color: var(--muted);
-  font-size: 9px;
-  margin-left: -4px;
-  top: -0.88em;
 }
 
 .menu-toggle {
@@ -705,12 +678,16 @@ p {
   margin: 0;
 }
 
+.story-copy {
+  max-width: 780px;
+}
+
 .story-copy p,
 .about-philosophy p {
   color: var(--muted);
   font-size: clamp(19px, 1.35vw, 25px);
-  line-height: 1.58;
-  margin: 0 0 28px;
+  line-height: 1.44;
+  margin: 0 0 22px;
 }
 
 .about-services {
@@ -1255,28 +1232,42 @@ p {
 }
 
 .startup-hero {
-  min-height: 86svh;
+  min-height: auto;
+  padding-bottom: clamp(88px, 12vh, 150px);
 }
 
 .startup-statement {
-  padding-block: 96px;
+  align-items: end;
+  padding-block: clamp(72px, 9vw, 112px);
 }
 
 .startup-statement h2 {
-  max-width: 820px;
+  max-width: 760px;
 }
 
 .startup-statement > p {
   align-self: end;
   color: var(--ink);
-  font-size: clamp(32px, 4vw, 56px);
+  font-size: clamp(34px, 4.2vw, 58px);
   font-weight: 850;
+  justify-self: start;
   letter-spacing: -0.06em;
   line-height: 0.96;
+  margin-bottom: 0.08em;
+  max-width: 680px;
 }
 
-.startup-capabilities {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.startup-support-list {
+  padding-bottom: 112px;
+}
+
+.startup-support-list article {
+  grid-template-columns: 90px minmax(260px, 0.82fr) minmax(360px, 1.2fr);
+  padding-block: clamp(44px, 5vw, 72px);
+}
+
+.startup-support-list h3 {
+  font-size: clamp(36px, 3.7vw, 58px);
 }
 
 .startup-fit {
@@ -2092,6 +2083,10 @@ textarea {
     padding: 48px 0;
   }
 
+  .startup-support-list article {
+    grid-template-columns: 1fr;
+  }
+
   .dark-cta-actions {
     justify-items: stretch;
   }
@@ -2275,6 +2270,19 @@ textarea {
   .story-copy p,
   .about-philosophy p {
     font-size: 19px;
+  }
+
+  .startup-hero {
+    padding-bottom: 70px;
+  }
+
+  .startup-statement {
+    gap: 28px;
+    padding-block: 72px;
+  }
+
+  .startup-statement > p {
+    max-width: none;
   }
 
   .profile-stat-grid {
