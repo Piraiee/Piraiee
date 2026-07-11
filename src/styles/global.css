@@ -2654,11 +2654,11 @@ textarea {
     right: 18px;
   }
   .nav-shell {
-    border-radius: 12px;
+    border-radius: 0;
   }
 
   .site-header.menu-open .nav-shell {
-    border-radius: 16px;
+    border-radius: 0;
   }
   body {
     background-size: 60px 60px, 60px 60px, auto, auto;
@@ -2693,7 +2693,7 @@ textarea {
 
   .nav-shell {
     background: rgba(247, 248, 251, 0.72);
-    border-radius: 24px;
+    border-radius: 0;
     backdrop-filter: blur(18px);
   }
 
