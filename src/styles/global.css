@@ -419,13 +419,15 @@ button:hover {
   display: grid;
   gap: 44px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  opacity: 0.42;
+  opacity: 1;
 }
 
 .trusted-logos img {
-  filter: grayscale(1);
-  max-height: clamp(38px, 5vh, 52px);
+  filter: none;
+  image-rendering: auto;
+  max-height: clamp(44px, 5.5vh, 58px);
   object-fit: contain;
+  opacity: 1;
   width: 100%;
 }
 
@@ -2768,9 +2770,9 @@ textarea {
   }
 
   .trusted-logos img {
-    filter: grayscale(1) contrast(1.7) brightness(0.58);
+    filter: none;
     max-height: 48px;
-    opacity: 0.82;
+    opacity: 1;
   }
 
   .process-list article {
