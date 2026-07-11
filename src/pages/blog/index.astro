@@ -31,19 +31,49 @@ const formatDate = (date: string) => {
   </section>
 
   <section class="writing-controls" aria-label="Search and filter writings">
-    <div class="writing-search">
-      <label for="writing-search-input">Search writings</label>
-      <input id="writing-search-input" type="search" placeholder="Search by company, topic, market, or keyword" autocomplete="off" />
+    <div class="writing-search-row">
+      <button
+        class="writing-category-toggle"
+        type="button"
+        aria-label="Browse writing categories"
+        aria-controls="writing-category-panel"
+        aria-expanded="false"
+        title="Categories"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 6h13M8 12h13M8 18h13" />
+          <circle cx="3" cy="6" r="1" />
+          <circle cx="3" cy="12" r="1" />
+          <circle cx="3" cy="18" r="1" />
+        </svg>
+      </button>
+      <div class="writing-search">
+        <label class="sr-only" for="writing-search-input">Search writings</label>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-4-4" />
+        </svg>
+        <input id="writing-search-input" type="search" placeholder="Search by company, topic, market, or keyword" autocomplete="off" />
+      </div>
     </div>
     <div class="writing-filter-head">
-      <p class="eyebrow">Browse by category</p>
+      <p class="eyebrow" id="writing-category-status">Browse by category</p>
       <span id="writing-result-count">{posts.length} writings</span>
     </div>
-    <div class="writing-categories" role="list" aria-label="Writing categories">
-      <button class="is-active" type="button" data-category="All">All</button>
-      {writingCategories.map((category) => (
-        <button type="button" data-category={category}>{category}</button>
-      ))}
+    <div class="writing-category-panel" id="writing-category-panel" hidden>
+      <div class="writing-category-drawer-head">
+        <strong>Browse by category</strong>
+        <button class="writing-category-close" type="button" aria-label="Close categories">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="writing-categories" role="list" aria-label="Writing categories">
+        <button class="is-active" type="button" data-category="All"><span>All categories</span></button>
+        {writingCategories.map((category) => (
+          <button type="button" data-category={category}><span>{category}</span></button>
+        ))}
+      </div>
+      <div class="writing-category-scroll-cue" aria-hidden="true"><span></span></div>
     </div>
   </section>
 
@@ -65,12 +95,20 @@ const formatDate = (date: string) => {
     ))}
   </div>
   <p class="writing-empty" id="writing-empty" hidden>No writings match this search yet.</p>
+  <button class="writing-to-top" type="button" aria-label="Back to top" title="Back to top" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 14 6-6 6 6" /></svg>
+  </button>
 
   <script>
     const searchInput = document.querySelector<HTMLInputElement>("#writing-search-input");
     const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>(".writing-categories button"));
     const rows = Array.from(document.querySelectorAll<HTMLElement>(".post-row"));
     const count = document.querySelector<HTMLElement>("#writing-result-count");
+    const categoryStatus = document.querySelector<HTMLElement>("#writing-category-status");
+    const categoryToggle = document.querySelector<HTMLButtonElement>(".writing-category-toggle");
+    const categoryPanel = document.querySelector<HTMLElement>("#writing-category-panel");
+    const categoryClose = document.querySelector<HTMLButtonElement>(".writing-category-close");
+    const toTop = document.querySelector<HTMLButtonElement>(".writing-to-top");
     const empty = document.querySelector<HTMLElement>("#writing-empty");
     const rail = document.querySelector<HTMLElement>(".writing-rail");
     const railTrack = document.querySelector<HTMLElement>("[data-writing-rail-track]");
@@ -83,6 +121,16 @@ const formatDate = (date: string) => {
     let isDraggingRail = false;
 
     const pluralize = (value: number) => value + " " + (value === 1 ? "writing" : "writings");
+    const isMobileFilter = () => window.matchMedia("(max-width: 620px)").matches;
+
+    const setCategoryPanel = (open: boolean) => {
+      if (!categoryPanel || !categoryToggle) return;
+      categoryPanel.hidden = !open;
+      categoryToggle.setAttribute("aria-expanded", String(open));
+      document.body.classList.toggle("writing-categories-open", open && isMobileFilter());
+      if (open && isMobileFilter()) categoryClose?.focus();
+      if (!open) categoryToggle.focus({ preventScroll: true });
+    };
 
     const setRailPreview = (row?: HTMLElement, step?: HTMLElement) => {
       if (!railPreview || !railPreviewTitle || !railPreviewMeta || !row) {
@@ -152,6 +200,11 @@ const formatDate = (date: string) => {
       });
 
       if (count) count.textContent = pluralize(visibleRows.length);
+      if (categoryStatus) {
+        categoryStatus.textContent = activeCategory === "All"
+          ? "Browse by category"
+          : "Browsing under " + activeCategory;
+      }
       if (empty) empty.hidden = visibleRows.length !== 0;
       setRailPreview();
       updateRail();
@@ -162,10 +215,23 @@ const formatDate = (date: string) => {
         activeCategory = button.dataset.category || "All";
         buttons.forEach((item) => item.classList.toggle("is-active", item === button));
         applyFilters();
+        if (isMobileFilter()) setCategoryPanel(false);
       });
     });
 
     searchInput?.addEventListener("input", applyFilters);
+    categoryToggle?.addEventListener("click", () => setCategoryPanel(Boolean(categoryPanel?.hidden)));
+    categoryClose?.addEventListener("click", () => setCategoryPanel(false));
+    toTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && categoryPanel && !categoryPanel.hidden) setCategoryPanel(false);
+    });
+
+    const updateToTop = () => {
+      if (!toTop) return;
+      toTop.hidden = window.scrollY <= window.innerHeight * 2;
+    };
 
     railTrack?.addEventListener("pointerdown", (event) => {
       if (window.innerWidth < 1180) return;
@@ -196,8 +262,18 @@ const formatDate = (date: string) => {
       window.setTimeout(() => setRailPreview(), 240);
     });
 
-    window.addEventListener("scroll", updateRail, { passive: true });
-    window.addEventListener("resize", updateRail);
+    window.addEventListener("scroll", () => {
+      updateRail();
+      updateToTop();
+    }, { passive: true });
+    window.addEventListener("resize", () => {
+      updateRail();
+      updateToTop();
+      if (categoryPanel && !categoryPanel.hidden) {
+        document.body.classList.toggle("writing-categories-open", isMobileFilter());
+      }
+    });
     applyFilters();
+    updateToTop();
   </script>
 </BaseLayout>
