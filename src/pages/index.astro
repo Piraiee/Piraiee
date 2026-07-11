@@ -17,11 +17,11 @@ const getHomepageDealTitle = (name: string): [string, string] =>
   homepageDealTitles[name] ?? [name, "Offer"];
 
 const homeBooks = [
-  { title: "Outlive", author: "Peter Attia", year: "2023", href: "https://www.goodreads.com/book/show/61153739-outlive" },
-  { title: "The Creative Act", author: "Rick Rubin", year: "2023", href: "https://www.goodreads.com/book/show/60965426-the-creative-act" },
-  { title: "Think Again", author: "Adam Grant", year: "2021", href: "https://www.goodreads.com/book/show/55539565-think-again" },
-  { title: "The Elephant in the Brain", author: "Kevin Simler & Robin Hanson", year: "2018", href: "https://www.goodreads.com/book/show/28820444-the-elephant-in-the-brain" },
-  { title: "Noise", author: "Daniel Kahneman, Olivier Sibony & Cass R. Sunstein", year: "2021", href: "https://www.goodreads.com/book/show/55339408-noise" }
+  { title: "Outlive", author: "Peter Attia", year: "2023", excerpt: "A practical framework for extending healthspan through prevention, evidence, and better long-term decisions.", href: "https://www.goodreads.com/book/show/61153739-outlive" },
+  { title: "The Creative Act", author: "Rick Rubin", year: "2023", excerpt: "A thoughtful study of creativity as a way of seeing, listening, and making meaningful work.", href: "https://www.goodreads.com/book/show/60965426-the-creative-act" },
+  { title: "Think Again", author: "Adam Grant", year: "2021", excerpt: "Why intellectual flexibility and the willingness to revise our beliefs are durable advantages.", href: "https://www.goodreads.com/book/show/55539565-think-again" },
+  { title: "The Elephant in the Brain", author: "Kevin Simler & Robin Hanson", year: "2018", excerpt: "An examination of the hidden motives behind institutions, choices, and everyday human behavior.", href: "https://www.goodreads.com/book/show/28820444-the-elephant-in-the-brain" },
+  { title: "Noise", author: "Daniel Kahneman, Olivier Sibony & Cass R. Sunstein", year: "2021", excerpt: "How unwanted variability distorts professional judgment and what organizations can do about it.", href: "https://www.goodreads.com/book/show/55339408-noise" }
 ];
 ---
 
@@ -141,14 +141,15 @@ const homeBooks = [
     </div>
     <div>
       <p>Building is faster than ever. The hard part is still choosing what deserves to be built, validating what matters, and focusing on the decisions that determine whether a company can become real.</p>
-      <a class="text-link" href="/startups/">Explore startup work</a>
+      <a class="button secondary" href="/startups/">Explore startup work</a>
     </div>
   </section>
 
-  <section class="section-heading compact-heading">
+  <section class="home-content-block" aria-labelledby="home-deals-heading">
+  <div class="section-heading compact-heading">
     <p class="eyebrow">/ 03 / Deals</p>
-    <h2>Useful offers for operators and founders.</h2>
-  </section>
+    <h2 id="home-deals-heading">Useful offers for operators and founders.</h2>
+  </div>
   <div class="deal-grid home-deal-grid">
     {
       deals.slice(0, 4).map((deal) => {
@@ -168,11 +169,13 @@ const homeBooks = [
   <div class="section-actions home-section-action">
     <a class="button secondary" href="/deals/">Explore deals</a>
   </div>
-
-  <section class="section-heading compact-heading">
-    <p class="eyebrow">/ 04 / Writing</p>
-    <h2>Signals from European startups and venture.</h2>
   </section>
+
+  <section class="home-content-block" aria-labelledby="home-writing-heading">
+  <div class="section-heading compact-heading">
+    <p class="eyebrow">/ 04 / Writing</p>
+    <h2 id="home-writing-heading">Signals from European startups and venture.</h2>
+  </div>
   <div class="post-list home-post-list">
     {posts.slice(0, 4).map((post) => (
       <a class="post-row" href={`/blog/${post.slug}/`}>
@@ -185,18 +188,22 @@ const homeBooks = [
   <div class="section-actions writing-section-action">
     <a class="button secondary" href="/blog/">Explore writing</a>
   </div>
-
-  <section class="section-heading compact-heading">
-    <p class="eyebrow">/ 05 / Reading</p>
-    <h2>Books that shaped my thinking.</h2>
   </section>
+
+  <section class="home-content-block" aria-labelledby="home-reading-heading">
+  <div class="section-heading compact-heading">
+    <p class="eyebrow">/ 05 / Reading</p>
+    <h2 id="home-reading-heading">Books that shaped my thinking.</h2>
+  </div>
   <section class="book-list home-book-list" aria-label="Selected reading">
     {homeBooks.map((book) => (
       <article class="book-row">
         <div>
-          <h2>{book.title}</h2>
-          <p>{book.author}</p>
-          <time datetime={book.year}>{book.year}</time>
+          <div class="book-row-heading">
+            <h2>{book.title}</h2>
+            <p>{book.author} / <time datetime={book.year}>{book.year}</time></p>
+          </div>
+          <p class="book-excerpt">{book.excerpt}</p>
         </div>
         <a href={book.href} target="_blank" rel="noreferrer">Read</a>
       </article>
@@ -205,6 +212,7 @@ const homeBooks = [
   <div class="section-actions reading-section-action">
     <a class="button secondary" href="/books/">Explore reading</a>
   </div>
+  </section>
 
   <section class="dark-cta">
     <div>

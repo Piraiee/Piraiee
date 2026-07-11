@@ -826,7 +826,7 @@ p {
 }
 
 .home-section-action {
-  padding-bottom: 96px;
+  padding-bottom: 40px;
 }
 
 .home-post-list {
@@ -834,15 +834,20 @@ p {
 }
 
 .writing-section-action {
-  padding-bottom: 96px;
+  padding-bottom: 40px;
 }
 
 .home-startups-section {
+  align-items: start;
   padding-block: 96px;
 }
 
-.home-startups-section .text-link {
-  display: inline-block;
+.home-startups-section > div:last-child {
+  padding-top: 37px;
+}
+
+.home-startups-section .button {
+  display: inline-flex;
   margin-top: 24px;
 }
 
@@ -852,8 +857,18 @@ p {
 }
 
 .reading-section-action {
-  padding-bottom: 112px;
+  padding-bottom: 40px;
 }
+
+.home-content-block { margin-inline: auto; max-width: var(--max); padding: 0 32px 72px; width: 100%; }
+.home-content-block > .section-heading, .home-content-block > .home-deal-grid, .home-content-block > .home-post-list, .home-content-block > .home-book-list, .home-content-block > .section-actions { max-width: none; padding-inline: 0; }
+.home-content-block > .section-actions { border-bottom: 1px solid var(--line); padding-top: 18px; }
+.home-book-list .book-row { min-height: 112px; padding-block: 25px; }
+.book-row-heading { align-items: baseline; display: flex; gap: 24px; min-width: 0; }
+.home-book-list .book-row h2 { flex: 0 0 auto; margin: 0; }
+.home-book-list .book-row-heading p { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.home-book-list .book-row-heading p::after { content: none; }
+.home-book-list .book-excerpt { display: block; font-size: 15px; font-weight: 500; letter-spacing: 0; margin: 8px 0 0; overflow: hidden; text-overflow: ellipsis; text-transform: none; white-space: nowrap; }
 
 .cards-grid.editorial {
   padding-block: 28px 108px;
@@ -1757,6 +1772,22 @@ textarea {
   font-size: 11px;
 }
 
+.cookie-consent { align-items: center; background: rgba(247, 248, 251, 0.94); border: 1px solid var(--line-strong); border-radius: 18px; bottom: 18px; box-shadow: 0 22px 70px rgba(11, 16, 32, 0.18); display: flex; gap: 28px; justify-content: space-between; left: 50%; max-width: min(1120px, calc(100vw - 36px)); padding: 20px 22px; position: fixed; transform: translateX(-50%); width: 100%; z-index: 50; backdrop-filter: blur(20px) saturate(1.2); }
+.cookie-consent[hidden] { display: none; }
+.cookie-consent p { color: var(--ink-soft); font-size: 14px; line-height: 1.45; margin: 0; max-width: 760px; }
+.cookie-consent a { color: var(--muted); display: inline-block; font-size: 12px; margin-top: 6px; text-decoration: underline; text-underline-offset: 3px; }
+.cookie-actions { display: flex; flex: 0 0 auto; gap: 10px; }
+.privacy-page { max-width: 980px; padding-block: 140px 110px; }
+.privacy-page h1 { color: var(--ink); font-size: clamp(52px, 7vw, 96px); letter-spacing: -0.065em; line-height: 0.94; margin: 0 0 28px; }
+.privacy-page .policy-intro { font-size: clamp(19px, 1.6vw, 25px); max-width: 780px; }
+.privacy-page section { border-top: 1px solid var(--line); padding-block: 42px; }
+.privacy-page h2 { font-size: clamp(30px, 3.4vw, 48px); margin-bottom: 18px; }
+.privacy-page h3 { font-size: 22px; letter-spacing: -0.02em; line-height: 1.2; margin: 28px 0 10px; }
+.privacy-page p, .privacy-page li { color: var(--muted); font-size: 17px; }
+.privacy-page a { text-decoration: underline; text-underline-offset: 3px; }
+.privacy-page table { border-collapse: collapse; color: var(--muted); font-size: 15px; width: 100%; }
+.privacy-page th, .privacy-page td { border-bottom: 1px solid var(--line); padding: 16px 12px; text-align: left; vertical-align: top; }
+
 @media (max-width: 960px) {
   .site-header {
     display: flex;
@@ -2134,6 +2165,12 @@ textarea {
     grid-template-columns: 1fr;
   }
 
+  .book-row-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
   .book-row a {
     justify-self: start;
   }
@@ -2162,6 +2199,25 @@ textarea {
   .post-list.large .post-row time {
     grid-column: auto;
   }
+
+  .cookie-consent {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .cookie-actions {
+    width: 100%;
+  }
+
+  .cookie-actions .button {
+    flex: 1 1 0;
+    width: auto;
+  }
+
+  .policy-table-wrap {
+    overflow-x: auto;
+  }
 }
 
 @media (max-width: 620px) {
@@ -2177,6 +2233,19 @@ textarea {
   .reading-list,
   .article {
     padding-inline: 20px;
+  }
+
+  .home-content-block {
+    padding-inline: 20px;
+  }
+
+  .home-startups-section > div:last-child {
+    padding-top: 0;
+  }
+
+  .home-book-list .book-excerpt {
+    line-height: 1.45;
+    white-space: normal;
   }
 
   .site-header {
@@ -2385,6 +2454,25 @@ textarea {
 
   .contact-panel {
     padding: 28px;
+  }
+
+  .cookie-consent {
+    bottom: 10px;
+    border-radius: 16px;
+    max-width: calc(100vw - 20px);
+    padding: 18px;
+  }
+
+  .cookie-actions {
+    flex-direction: column-reverse;
+  }
+
+  .privacy-page {
+    padding-block: 108px 72px;
+  }
+
+  .privacy-page table {
+    min-width: 680px;
   }
 }
 

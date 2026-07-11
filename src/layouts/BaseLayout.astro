@@ -1,18 +1,28 @@
 ---
 import { navItems, site } from "../data/site";
 import SocialIcon from "../components/SocialIcon.astro";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/inter/800.css";
+import "@fontsource/manrope/400.css";
+import "@fontsource/manrope/600.css";
+import "@fontsource/manrope/700.css";
+import "@fontsource/manrope/800.css";
 import "../styles/global.css";
 
 type Props = {
   title?: string;
   description?: string;
   image?: string;
+  robots?: string;
 };
 
 const {
   title = site.name,
   description = site.description,
-  image = site.heroImage
+  image = site.heroImage,
+  robots = "index,follow"
 } = Astro.props;
 
 const pageTitle = title === site.name ? `${site.name} | ${site.domain}` : `${title} | ${site.name}`;
@@ -36,9 +46,7 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <meta name="robots" content={robots} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -90,6 +98,16 @@ const jsonLd = {
       </div>
       <p class="copyright">©1998-2026 piraiee.com · all rights reserved</p>
     </footer>
+    <aside class="cookie-consent" data-cookie-consent hidden aria-label="Cookie preferences">
+      <div>
+        <p>By using piraiee.com, you agree to our use of cookies. We use cookies to provide you with a great experience and help our website run effectively.</p>
+        <a href="/privacy/">Cookies and data privacy</a>
+      </div>
+      <div class="cookie-actions">
+        <button class="button secondary" type="button" data-cookie-essential>Essential only</button>
+        <button class="button" type="button" data-cookie-accept>Accept</button>
+      </div>
+    </aside>
     <script>
       const header = document.querySelector("[data-header]");
       const toggle = document.querySelector("[data-menu-toggle]");
@@ -110,6 +128,49 @@ const jsonLd = {
       window.addEventListener("keydown", (event) => {
         if (event.key === "Escape") setMenu(false);
       });
+
+      document.querySelectorAll(".accordion-list").forEach((accordion) => {
+        const items = Array.from(accordion.querySelectorAll("details"));
+        items.forEach((item) => item.addEventListener("toggle", () => {
+          if (item.open) items.forEach((other) => {
+            if (other !== item) other.open = false;
+          });
+        }));
+      });
+
+      const consentKey = "piraiee-cookie-consent-v1";
+      const consentBanner = document.querySelector("[data-cookie-consent]");
+      const analyticsWindow = window as typeof window & {
+        dataLayer: unknown[][];
+        gtag: (...args: unknown[]) => void;
+      };
+      const loadAnalytics = () => {
+        if (document.querySelector("script[data-piraiee-analytics]")) return;
+        analyticsWindow.dataLayer = analyticsWindow.dataLayer || [];
+        analyticsWindow.gtag = (...args: unknown[]) => { analyticsWindow.dataLayer.push(args); };
+        analyticsWindow.gtag("js", new Date());
+        analyticsWindow.gtag("config", "G-KTW8ESEEMM", { anonymize_ip: true });
+        const script = document.createElement("script");
+        script.async = true;
+        script.src = "https://www.googletagmanager.com/gtag/js?id=G-KTW8ESEEMM";
+        script.dataset.piraieeAnalytics = "true";
+        document.head.appendChild(script);
+      };
+      const saveConsent = (analytics: boolean) => {
+        localStorage.setItem(consentKey, JSON.stringify({ analytics, savedAt: new Date().toISOString() }));
+        consentBanner?.setAttribute("hidden", "");
+        if (analytics) loadAnalytics();
+      };
+      let savedConsent: { analytics?: boolean } | null = null;
+      try { savedConsent = JSON.parse(localStorage.getItem(consentKey) || "null"); } catch {}
+      if (savedConsent?.analytics === true) loadAnalytics();
+      if (!savedConsent) consentBanner?.removeAttribute("hidden");
+      document.querySelector("[data-cookie-essential]")?.addEventListener("click", () => saveConsent(false));
+      document.querySelector("[data-cookie-accept]")?.addEventListener("click", () => saveConsent(true));
+      document.querySelectorAll("[data-cookie-reset]").forEach((button) => button.addEventListener("click", () => {
+        localStorage.removeItem(consentKey);
+        location.reload();
+      }));
     </script>
   </body>
 </html>
