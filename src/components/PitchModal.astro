@@ -21,7 +21,7 @@ const stages = ["Idea", "MVP", "Early users", "Revenue", "Scaling"];
     <h2 id="pitch-title">Ready to pitch or level up?</h2>
     <p>Tell me about your startup, what you are building, and where experienced challenge or support could create the most leverage.</p>
   </div>
-  <form class="contact-form clarity-form pitch-form" action="/api/lead" method="post" data-pitch-form>
+  <form class="contact-form clarity-form pitch-form" action="/api/lead" method="post" enctype="multipart/form-data" data-pitch-form>
     <input type="hidden" name="source" value="piraiee.com/startup-pitch" />
     <input type="hidden" name="topic" value="Startup Pitch or Level Up" />
     <label>
@@ -38,7 +38,7 @@ const stages = ["Idea", "MVP", "Early users", "Revenue", "Scaling"];
     </label>
     <label>
       <span>Phone</span>
-      <input name="phone" type="tel" autocomplete="tel" />
+      <input name="phone" type="tel" autocomplete="tel" inputmode="tel" pattern="^\+?[0-9 ()-]{7,20}$" data-phone-input />
     </label>
     <label>
       <span>Company name</span>
@@ -70,6 +70,11 @@ const stages = ["Idea", "MVP", "Early users", "Revenue", "Scaling"];
       <span>Pitch deck URL</span>
       <input name="pitch_deck_url" type="url" inputmode="url" placeholder="Google Slides, Canva, DocSend, or PDF link" />
     </label>
+    <label class="pitch-file">
+      <span>Pitch deck file</span>
+      <input name="pitch_deck_file" type="file" accept=".pdf,.ppt,.pptx,.key,.doc,.docx,.png,.jpg,.jpeg" data-pitch-file />
+      <small>Optional. One file only, max 4MB.</small>
+    </label>
     <label class="pitch-message">
       <span>What are you building, and how can I support you?</span>
       <textarea name="message" rows="5" required></textarea>
@@ -89,6 +94,13 @@ const stages = ["Idea", "MVP", "Early users", "Revenue", "Scaling"];
   const pitchCloseButton = document.querySelector("[data-pitch-close]");
   const pitchForm = document.querySelector<HTMLFormElement>("[data-pitch-form]");
   const pitchStatus = document.querySelector<HTMLElement>("[data-pitch-status]");
+  const pitchFileInput = document.querySelector<HTMLInputElement>("[data-pitch-file]");
+  const phoneInput = document.querySelector<HTMLInputElement>("[data-phone-input]");
+  const maxPitchFileSize = 4 * 1024 * 1024;
+
+  const syncPitchModalLock = () => {
+    document.documentElement.classList.toggle("modal-open", Boolean(document.querySelector("dialog[open]")));
+  };
 
   const closePitchModal = () => {
     if (pitchModal instanceof HTMLDialogElement) pitchModal.close();
@@ -104,14 +116,50 @@ const stages = ["Idea", "MVP", "Early users", "Revenue", "Scaling"];
   });
 
   pitchCloseButton?.addEventListener("click", closePitchModal);
-  pitchModal?.addEventListener("close", () => document.documentElement.classList.remove("modal-open"));
+  pitchModal?.addEventListener("close", () => requestAnimationFrame(syncPitchModalLock));
   pitchModal?.addEventListener("click", (event) => {
     if (event.target === pitchModal) closePitchModal();
+  });
+
+  pitchFileInput?.addEventListener("change", () => {
+    const file = pitchFileInput.files?.[0];
+    if (!file) return;
+    if (file.size > maxPitchFileSize) {
+      pitchFileInput.value = "";
+      if (pitchStatus) pitchStatus.textContent = "Please upload one file smaller than 4MB.";
+    } else if (pitchStatus) {
+      pitchStatus.textContent = "";
+    }
+  });
+
+  phoneInput?.addEventListener("input", () => {
+    const cursor = phoneInput.selectionStart ?? phoneInput.value.length;
+    const before = phoneInput.value;
+    const sanitized = before
+      .replace(/[^\d+ ()-]/g, "")
+      .replace(/(?!^)\+/g, "")
+      .slice(0, 20);
+
+    if (before !== sanitized) {
+      phoneInput.value = sanitized;
+      const nextCursor = Math.max(0, cursor - (before.length - sanitized.length));
+      phoneInput.setSelectionRange(nextCursor, nextCursor);
+    }
   });
 
   pitchForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const submitButton = pitchForm.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (phoneInput?.value && !phoneInput.checkValidity()) {
+      if (pitchStatus) pitchStatus.textContent = "Please enter a valid phone number.";
+      phoneInput.focus();
+      return;
+    }
+    const selectedFile = pitchFileInput?.files?.[0];
+    if (selectedFile && selectedFile.size > maxPitchFileSize) {
+      if (pitchStatus) pitchStatus.textContent = "Please upload one file smaller than 4MB.";
+      return;
+    }
     if (submitButton) submitButton.disabled = true;
     if (pitchStatus) pitchStatus.textContent = "Sending your startup...";
 
@@ -123,7 +171,9 @@ const stages = ["Idea", "MVP", "Early users", "Revenue", "Scaling"];
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || "Unable to send your request.");
       pitchForm.reset();
-      if (pitchStatus) pitchStatus.textContent = "Thank you. Your startup has been submitted.";
+      if (pitchStatus) pitchStatus.textContent = "";
+      closePitchModal();
+      window.dispatchEvent(new CustomEvent("piraiee:form-success", { detail: { eyebrow: "Startup submitted" } }));
     } catch (error) {
       if (pitchStatus) pitchStatus.textContent = error instanceof Error ? error.message : "Unable to send your request.";
     } finally {

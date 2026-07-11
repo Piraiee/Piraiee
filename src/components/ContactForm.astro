@@ -18,7 +18,7 @@ const topics = [
 const timelines = ["This week", "This month", "Next 3 months", "Just exploring"];
 ---
 
-<form class="contact-form" action="/api/lead" method="post">
+<form class="contact-form" action="/api/lead" method="post" data-contact-form>
   <input type="hidden" name="source" value="piraiee.com/contact" />
   <label>
     <span>Name</span>
@@ -48,5 +48,34 @@ const timelines = ["This week", "This month", "Next 3 months", "Just exploring"]
       {timelines.map((timeline) => <option value={timeline}>{timeline}</option>)}
     </select>
   </label>
+  <p class="contact-form-status" role="status" aria-live="polite" data-contact-status></p>
   <button type="submit">Start the Conversation</button>
 </form>
+
+<script>
+  const contactForm = document.querySelector<HTMLFormElement>("[data-contact-form]");
+  const contactStatus = document.querySelector<HTMLElement>("[data-contact-status]");
+
+  contactForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const submitButton = contactForm.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (submitButton) submitButton.disabled = true;
+    if (contactStatus) contactStatus.textContent = "Sending your message...";
+
+    try {
+      const response = await fetch(contactForm.action, {
+        method: "POST",
+        body: new FormData(contactForm)
+      });
+      const result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.error || "Unable to send your message.");
+      contactForm.reset();
+      if (contactStatus) contactStatus.textContent = "";
+      window.dispatchEvent(new CustomEvent("piraiee:form-success", { detail: { eyebrow: "Message sent" } }));
+    } catch (error) {
+      if (contactStatus) contactStatus.textContent = error instanceof Error ? error.message : "Unable to send your message.";
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+    }
+  });
+</script>

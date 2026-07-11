@@ -153,9 +153,12 @@ const statements = [
       const response = await fetch(feedbackForm.action, { method: "POST", body: formData });
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || "Unable to send your feedback.");
-      window.location.assign("/");
+      feedbackForm.reset();
+      if (feedbackStatus) feedbackStatus.textContent = "";
+      window.dispatchEvent(new CustomEvent("piraiee:form-success", { detail: { eyebrow: "Feedback sent" } }));
     } catch (error) {
       if (feedbackStatus) feedbackStatus.textContent = error instanceof Error ? error.message : "Unable to send your feedback.";
+    } finally {
       if (submitButton) submitButton.disabled = false;
     }
   });

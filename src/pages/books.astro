@@ -2,6 +2,12 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BackToTop from "../components/BackToTop.astro";
 import { books } from "../data/books";
+
+const publicationYear = (value: string) => {
+  if (value === "n.d.") return value;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? value.match(/\b\d{4}\b/)?.[0] ?? value : String(date.getFullYear());
+};
 ---
 
 <BaseLayout title="Reading" description="Books that shape Ahmad Piraiee's thinking on startups, AI, strategy, technology, and human behavior.">
@@ -21,7 +27,7 @@ import { books } from "../data/books";
           <div class="book-row-heading">
             <h2>{book.title}</h2>
             <p>{book.author}</p>
-            <time datetime={book.year === "n.d." ? undefined : book.year}>{book.year}</time>
+            <time datetime={book.year === "n.d." ? undefined : book.year}>{publicationYear(book.year)}</time>
           </div>
           <p class="book-excerpt">{book.excerpt}</p>
         </div>

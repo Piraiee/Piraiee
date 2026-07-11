@@ -33,7 +33,7 @@ const nextSteps = [
     <p class="eyebrow">Clarity Session Request</p>
     <h2 id="clarity-title">Let's see if I can help.</h2>
   </div>
-  <form class="contact-form clarity-form" action="/api/lead" method="post">
+  <form class="contact-form clarity-form" action="/api/lead" method="post" data-clarity-form>
     <input type="hidden" name="source" value="piraiee.com/clarity-session" />
     <input type="hidden" name="topic" value="Clarity Session Request" />
     <label>
@@ -90,6 +90,7 @@ const nextSteps = [
         {nextSteps.map((item) => <option value={item}>{item}</option>)}
       </select>
     </label>
+    <p class="clarity-form-status" role="status" aria-live="polite" data-clarity-status></p>
     <button type="submit">Send request</button>
   </form>
 </dialog>
@@ -98,6 +99,16 @@ const nextSteps = [
   const modal = document.querySelector("[data-clarity-modal]");
   const openButtons = document.querySelectorAll("[data-clarity-open]");
   const closeButton = document.querySelector("[data-clarity-close]");
+  const clarityForm = document.querySelector<HTMLFormElement>("[data-clarity-form]");
+  const clarityStatus = document.querySelector<HTMLElement>("[data-clarity-status]");
+
+  const syncClarityModalLock = () => {
+    document.documentElement.classList.toggle("modal-open", Boolean(document.querySelector("dialog[open]")));
+  };
+
+  const closeClarityModal = () => {
+    if (modal instanceof HTMLDialogElement) modal.close();
+  };
 
   openButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -108,17 +119,34 @@ const nextSteps = [
     });
   });
 
-  closeButton?.addEventListener("click", () => {
-    if (modal instanceof HTMLDialogElement) {
-      modal.close();
-      document.documentElement.classList.remove("modal-open");
-    }
+  closeButton?.addEventListener("click", closeClarityModal);
+
+  modal?.addEventListener("close", () => requestAnimationFrame(syncClarityModalLock));
+  modal?.addEventListener("click", (event) => {
+    if (event.target === modal) closeClarityModal();
   });
 
-  modal?.addEventListener("close", () => document.documentElement.classList.remove("modal-open"));
-  modal?.addEventListener("click", (event) => {
-    if (event.target === modal && modal instanceof HTMLDialogElement) {
-      modal.close();
+  clarityForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const submitButton = clarityForm.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (submitButton) submitButton.disabled = true;
+    if (clarityStatus) clarityStatus.textContent = "Sending your request...";
+
+    try {
+      const response = await fetch(clarityForm.action, {
+        method: "POST",
+        body: new FormData(clarityForm)
+      });
+      const result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.error || "Unable to send your request.");
+      clarityForm.reset();
+      if (clarityStatus) clarityStatus.textContent = "";
+      closeClarityModal();
+      window.dispatchEvent(new CustomEvent("piraiee:form-success", { detail: { eyebrow: "Clarity request sent" } }));
+    } catch (error) {
+      if (clarityStatus) clarityStatus.textContent = error instanceof Error ? error.message : "Unable to send your request.";
+    } finally {
+      if (submitButton) submitButton.disabled = false;
     }
   });
 </script>

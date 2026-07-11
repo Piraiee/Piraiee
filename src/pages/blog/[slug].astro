@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ArticleShare from "../../components/ArticleShare.astro";
 import { posts } from "../../data/posts";
 
 export const prerender = true;
@@ -45,6 +46,7 @@ const articleContent = cleanContent(post.content);
     <figure class="featured-image">
       <img src={post.featuredImage} alt={`${post.title} featured visual`} />
     </figure>
+    <ArticleShare title={post.title} slug={post.slug} />
     <div class="article-content" set:html={articleContent} />
   </article>
 </BaseLayout>

@@ -1,0 +1,91 @@
+---
+interface Props {
+  title: string;
+  slug: string;
+}
+
+const { title, slug } = Astro.props;
+---
+
+<div class="article-share" data-article-share data-title={title} data-slug={slug}>
+  <p>Share this writing</p>
+  <div class="article-share-actions" aria-label="Share this writing">
+    <button type="button" data-share="linkedin" aria-label="Share on LinkedIn" title="LinkedIn">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8.3H3.2V21h3.3V8.3ZM4.9 3A1.9 1.9 0 1 0 5 6.8 1.9 1.9 0 0 0 4.9 3ZM21 13.7c0-3.8-2-5.6-4.7-5.6-2.2 0-3.1 1.2-3.7 2V8.3H9.3V21h3.3v-6.3c0-1.7.3-3.3 2.4-3.3 2 0 2.1 1.9 2.1 3.4V21H21v-7.3Z"/></svg>
+    </button>
+    <button type="button" data-share="x" aria-label="Share on X" title="X">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3L12 15.6 6.4 22H3.2l7.3-8.4L2.8 2h6.5l4.4 5.8L18.9 2Zm-1.1 17.9h1.7L8.3 4H6.5l11.3 15.9Z"/></svg>
+    </button>
+    <button type="button" data-share="facebook" aria-label="Share on Facebook" title="Facebook">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.8 22v-9h3l.5-3.5h-3.5V7.3c0-1 .3-1.7 1.8-1.7h1.9V2.4c-.3 0-1.5-.1-2.8-.1-2.8 0-4.7 1.7-4.7 4.8v2.4H7V13h3v9h3.8Z"/></svg>
+    </button>
+    <button type="button" data-share="whatsapp" aria-label="Share on WhatsApp" title="WhatsApp">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.5 4.1 1.6 5.9L.2 24l6.5-1.7c1.7.9 3.5 1.4 5.4 1.4 6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.2-6.1-3.4-8.4ZM12.1 21.7c-1.7 0-3.4-.5-4.9-1.3l-.4-.2-3.8 1 1-3.7-.2-.4a9.8 9.8 0 1 1 8.3 4.6Zm5.4-7.3c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.8-.9-3-1.6-4.2-3.7-.3-.5.3-.5.9-1.7.1-.2 0-.4 0-.6l-.9-2.1c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.3 1.4 3.5c.1.2 2.4 3.7 5.9 5.2.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.4Z"/></svg>
+    </button>
+    <button type="button" data-share="native" aria-label="Share using your device" title="Share">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2L8.9 13a3.4 3.4 0 0 0 0-2l6.7-4.2A3 3 0 1 0 15 5c0 .3 0 .6.1.9L8.4 10a3 3 0 1 0 0 4l6.7 4.1a3 3 0 1 0 2.9-2.2Z"/></svg>
+    </button>
+    <button type="button" data-share="copy" aria-label="Copy short link" title="Copy link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 15.5a1 1 0 0 1 0-1.4l4.6-4.6a1 1 0 0 1 1.4 1.4l-4.6 4.6a1 1 0 0 1-1.4 0Zm7.8-1.8 3-3a5 5 0 0 0-7.1-7.1l-3 3a1 1 0 1 0 1.4 1.4l3-3a3 3 0 0 1 4.3 4.3l-3 3a1 1 0 0 0 1.4 1.4ZM6.7 10.3l-3 3a5 5 0 0 0 7.1 7.1l3-3a1 1 0 0 0-1.4-1.4l-3 3a3 3 0 0 1-4.3-4.3l3-3a1 1 0 0 0-1.4-1.4Z"/></svg>
+    </button>
+  </div>
+  <span class="article-share-status" aria-live="polite"></span>
+</div>
+
+<script>
+  const shareTargets = {
+    linkedin: (url: string) => `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+    x: (url: string, title: string) => `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
+    facebook: (url: string) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+    whatsapp: (url: string, title: string) => `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}`
+  };
+
+  document.querySelectorAll<HTMLElement>("[data-article-share]").forEach((share) => {
+    const title = share.dataset.title || document.title;
+    const slug = share.dataset.slug || "";
+    const status = share.querySelector<HTMLElement>(".article-share-status");
+    let shortLinkPromise: Promise<string> | null = null;
+
+    const getShortLink = () => {
+      if (!shortLinkPromise) {
+        const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href || window.location.href;
+        shortLinkPromise = fetch("/api/share-link", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: canonical, slug })
+        })
+          .then(async (response) => {
+            if (!response.ok) throw new Error("Short link unavailable");
+            const data = await response.json();
+            return data.shortLink as string;
+          })
+          .catch(() => canonical);
+      }
+      return shortLinkPromise;
+    };
+
+    share.addEventListener("click", async (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-share]");
+      if (!button) return;
+      const network = button.dataset.share || "";
+      button.setAttribute("aria-busy", "true");
+      if (status) status.textContent = "Preparing link";
+      const url = await getShortLink();
+      button.removeAttribute("aria-busy");
+
+      if (network === "copy") {
+        await navigator.clipboard.writeText(url);
+        if (status) status.textContent = "Link copied";
+      } else if (network === "native" && navigator.share) {
+        await navigator.share({ title, url }).catch(() => undefined);
+        if (status) status.textContent = "";
+      } else {
+        const target = shareTargets[network as keyof typeof shareTargets];
+        if (target) window.open(target(url, title), "_blank", "noopener,noreferrer,width=720,height=640");
+        if (status) status.textContent = "";
+      }
+
+      if (status?.textContent) window.setTimeout(() => { status.textContent = ""; }, 2400);
+    });
+  });
+</script>
