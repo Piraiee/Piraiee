@@ -2096,7 +2096,7 @@ textarea {
   .nav-shell {
     background: rgba(247, 248, 251, 0.74);
     border: 1px solid rgba(11, 16, 32, 0.09);
-    border-radius: 18px;
+    border-radius: 0;
     box-shadow: 0 14px 42px rgba(32, 43, 65, 0.12);
     backdrop-filter: blur(20px) saturate(1.24);
     gap: 0;
@@ -2126,7 +2126,7 @@ textarea {
     align-content: stretch;
     background: rgba(247, 248, 251, 0.92);
     border: 1px solid rgba(11, 16, 32, 0.09);
-    border-radius: 28px;
+    border-radius: 0;
     box-shadow: 0 24px 70px rgba(32, 43, 65, 0.18);
     gap: 24px;
     grid-template-columns: 1fr auto;
