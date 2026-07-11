@@ -987,7 +987,7 @@ p {
   border-bottom: 1px solid var(--line);
 }
 
-.post-row span,
+.post-row > span,
 .post-row time {
   color: var(--muted);
   font-size: 12px;
@@ -1012,6 +1012,16 @@ p {
 .post-list.large .post-row time {
   grid-column: 2;
   margin: 0;
+}
+
+.post-read-more {
+  color: inherit;
+  font-size: inherit;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-decoration: underline;
+  text-transform: none;
+  text-underline-offset: 3px;
 }
 
 .page-hero {
@@ -1087,6 +1097,7 @@ p {
 
 
 .writing-hero {
+  max-width: 1180px;
   padding-bottom: 82px;
 }
 
@@ -1094,7 +1105,7 @@ p {
   border-block: 1px solid var(--line);
   display: grid;
   gap: 28px;
-  max-width: var(--max);
+  max-width: 1180px;
   padding-block: 34px 42px;
 }
 
@@ -1186,12 +1197,16 @@ p {
   font-size: clamp(20px, 1.5vw, 28px);
   font-weight: 720;
   margin-inline: auto;
-  max-width: var(--max);
+  max-width: 1180px;
   padding: 72px 32px 128px;
 }
 
 .writing-rail {
   display: none;
+}
+
+#writing-results {
+  max-width: 1180px;
 }
 
 .deals-hero {

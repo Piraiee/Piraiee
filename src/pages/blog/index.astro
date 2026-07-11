@@ -59,7 +59,7 @@ const formatDate = (date: string) => {
       >
         <span>{post.category}</span>
         <strong>{post.title}</strong>
-        <p>{post.excerpt}</p>
+        <p>{post.excerpt} <span class="post-read-more">Read more</span></p>
         <time datetime={post.date}>{formatDate(post.date)}</time>
       </a>
     ))}
