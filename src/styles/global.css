@@ -1766,10 +1766,70 @@ textarea {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.clarity-form label:nth-of-type(6),
-.clarity-form label:nth-of-type(9),
+.clarity-modal:not(.pitch-modal) .clarity-form label:nth-of-type(6),
+.clarity-modal:not(.pitch-modal) .clarity-form label:nth-of-type(9),
 .clarity-form button {
   grid-column: 1 / -1;
+}
+
+.pitch-modal-copy > p:last-child {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.55;
+  margin: 24px 0 0;
+}
+
+.pitch-form .pitch-message,
+.pitch-form .pitch-consent,
+.pitch-form .pitch-form-status,
+.pitch-form > button {
+  grid-column: 1 / -1;
+}
+
+.pitch-consent {
+  align-items: start;
+  display: grid !important;
+  gap: 12px;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.pitch-consent input {
+  height: 20px;
+  margin-top: 2px;
+  min-height: 0;
+  width: 20px;
+}
+
+.pitch-consent > span {
+  font-size: 13px;
+  font-weight: 560;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-transform: none;
+}
+
+.pitch-consent a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pitch-form-status {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0;
+  min-height: 1.4em;
+}
+
+.dark-outline-button {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.52);
+  color: white;
+}
+
+.dark-outline-button:hover {
+  background: white;
+  border-color: white;
+  color: var(--ink);
 }
 
 @keyframes modal-rise {

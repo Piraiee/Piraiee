@@ -1,0 +1,133 @@
+---
+const meetingSources = ["Startup Grind", "Venture Cafe", "Google for Startups", "Pitch Me Baby", "Other"];
+const industries = [
+  "AI and automation",
+  "B2B software",
+  "Consumer",
+  "Deep tech",
+  "Fintech",
+  "Health and biotech",
+  "Climate and energy",
+  "Space and defense",
+  "Other"
+];
+const stages = ["Idea", "MVP", "Early users", "Revenue", "Scaling"];
+---
+
+<dialog class="clarity-modal pitch-modal" data-pitch-modal aria-labelledby="pitch-title">
+  <button class="modal-close" type="button" data-pitch-close aria-label="Close startup form">×</button>
+  <div class="modal-copy pitch-modal-copy">
+    <p class="eyebrow">Startup support</p>
+    <h2 id="pitch-title">Ready to pitch or level up?</h2>
+    <p>Tell me about your startup, what you are building, and where experienced challenge or support could create the most leverage.</p>
+  </div>
+  <form class="contact-form clarity-form pitch-form" action="/api/lead" method="post" data-pitch-form>
+    <input type="hidden" name="source" value="piraiee.com/startup-pitch" />
+    <input type="hidden" name="topic" value="Startup Pitch or Level Up" />
+    <label>
+      <span>First name</span>
+      <input name="first_name" autocomplete="given-name" required />
+    </label>
+    <label>
+      <span>Last name</span>
+      <input name="last_name" autocomplete="family-name" required />
+    </label>
+    <label>
+      <span>Email</span>
+      <input name="email" type="email" autocomplete="email" required />
+    </label>
+    <label>
+      <span>Phone</span>
+      <input name="phone" type="tel" autocomplete="tel" />
+    </label>
+    <label>
+      <span>Company name</span>
+      <input name="company" autocomplete="organization" required />
+    </label>
+    <label>
+      <span>Website</span>
+      <input name="website" type="url" inputmode="url" placeholder="https://" />
+    </label>
+    <label>
+      <span>Where did we meet?</span>
+      <select name="meeting_source" required>
+        {meetingSources.map((item) => <option value={item}>{item}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>Industry</span>
+      <select name="industry" required>
+        {industries.map((item) => <option value={item}>{item}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>What stage is your startup currently in?</span>
+      <select name="stage" required>
+        {stages.map((item) => <option value={item}>{item}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>Pitch deck URL</span>
+      <input name="pitch_deck_url" type="url" inputmode="url" placeholder="Google Slides, Canva, DocSend, or PDF link" />
+    </label>
+    <label class="pitch-message">
+      <span>What are you building, and how can I support you?</span>
+      <textarea name="message" rows="5" required></textarea>
+    </label>
+    <label class="pitch-consent">
+      <input name="privacy_consent" type="checkbox" value="I agree" required />
+      <span>I agree to the processing of my information for evaluating this request, as described in the <a href="/privacy/" target="_blank">Privacy Policy</a>.</span>
+    </label>
+    <p class="pitch-form-status" role="status" aria-live="polite" data-pitch-status></p>
+    <button type="submit">Submit startup</button>
+  </form>
+</dialog>
+
+<script>
+  const pitchModal = document.querySelector("[data-pitch-modal]");
+  const pitchOpenButtons = document.querySelectorAll("[data-pitch-open]");
+  const pitchCloseButton = document.querySelector("[data-pitch-close]");
+  const pitchForm = document.querySelector<HTMLFormElement>("[data-pitch-form]");
+  const pitchStatus = document.querySelector<HTMLElement>("[data-pitch-status]");
+
+  const closePitchModal = () => {
+    if (pitchModal instanceof HTMLDialogElement) pitchModal.close();
+  };
+
+  pitchOpenButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (pitchModal instanceof HTMLDialogElement) {
+        pitchModal.showModal();
+        document.documentElement.classList.add("modal-open");
+      }
+    });
+  });
+
+  pitchCloseButton?.addEventListener("click", closePitchModal);
+  pitchModal?.addEventListener("close", () => document.documentElement.classList.remove("modal-open"));
+  pitchModal?.addEventListener("click", (event) => {
+    if (event.target === pitchModal) closePitchModal();
+  });
+
+  pitchForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const submitButton = pitchForm.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (submitButton) submitButton.disabled = true;
+    if (pitchStatus) pitchStatus.textContent = "Sending your startup...";
+
+    try {
+      const formData = new FormData(pitchForm);
+      const fullName = `${formData.get("first_name") || ""} ${formData.get("last_name") || ""}`.trim();
+      formData.set("name", fullName);
+      const response = await fetch(pitchForm.action, { method: "POST", body: formData });
+      const result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.error || "Unable to send your request.");
+      pitchForm.reset();
+      if (pitchStatus) pitchStatus.textContent = "Thank you. Your startup has been submitted.";
+    } catch (error) {
+      if (pitchStatus) pitchStatus.textContent = error instanceof Error ? error.message : "Unable to send your request.";
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+    }
+  });
+</script>

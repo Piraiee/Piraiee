@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ClarityModal from "../components/ClarityModal.astro";
+import PitchModal from "../components/PitchModal.astro";
 
 const supportAreas = [
   {
@@ -73,6 +74,7 @@ const founderFit = [
     </p>
     <div class="actions">
       <button class="button" type="button" data-clarity-open>Book a Clarity Session</button>
+      <button class="button secondary" type="button" data-pitch-open>Pitch or Level Up</button>
     </div>
   </section>
 
@@ -149,8 +151,10 @@ const founderFit = [
     </div>
     <div class="dark-cta-actions">
       <button class="button light-button" type="button" data-clarity-open>Book a Clarity Session</button>
+      <button class="button dark-outline-button" type="button" data-pitch-open>Pitch or Level Up</button>
     </div>
   </section>
 
   <ClarityModal />
+  <PitchModal />
 </BaseLayout>
