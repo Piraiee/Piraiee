@@ -6,7 +6,7 @@ export interface Book {
   excerpt: string;
 }
 
-export const books: Book[] = [
+const rawBooks: Book[] = [
   {
     title: "Take Me to Your Leader: Perspectives on Your First Alien Encounter",
     author: "Neil deGrasse Tyson",
@@ -1900,169 +1900,200 @@ export const books: Book[] = [
   {
     title: "An Introduction to Machine Learning",
     author: "Gopinath Rebala",
-    year: "n.d.",
+    year: "May 7, 2019",
     href: "https://www.goodreads.com/book/show/51859640",
     excerpt: "Just like electricity, Machine Learning will revolutionize our life in many ways – some of which are not even conceivable today."
   },
   {
     title: "Animal Farm / 1984",
     author: "George Orwell",
-    year: "n.d.",
+    year: "June 1, 2003",
     href: "https://www.goodreads.com/book/show/5472",
     excerpt: "This edition features George Orwell’s best-known novels—1984 and Animal Farm—with an introduction by Christopher Hitchens."
   },
   {
     title: "Freedom, Innovation, Prosperity: The Secrets of Success in the Digital Era",
     author: "Zoltan Csefalvay",
-    year: "n.d.",
+    year: "February 5, 2026",
     href: "https://www.goodreads.com/book/show/247632802",
     excerpt: "A thought-provoking exploration of the ideas and questions behind Freedom, Innovation, Prosperity: The Secrets of Success in the Digital Era."
   },
   {
     title: "How to Die Alone: The Foolproof Guide to Not Helping Yourself",
     author: "Mo Welch",
-    year: "n.d.",
+    year: "April 16, 2019",
     href: "https://www.goodreads.com/book/show/40591659",
     excerpt: "It’s OK. Really.   For every brave soul who wants to just say no—no to meeting the gang for drinks, no to wishing a coworker happy birthday (unless there’s free cake involved), and no to..."
   },
   {
     title: "How to Make a Few Billion Dollars",
     author: "Brad Jacobs",
-    year: "n.d.",
+    year: "January 15, 2024",
     href: "https://www.goodreads.com/book/show/199249408",
     excerpt: "Do you have a burning passion to make a lot of money in business?"
   },
   {
     title: "I'm a MOD: conversations about personal excellence",
     author: "Igor Legowski",
-    year: "n.d.",
+    year: "January 13, 2024",
     href: "https://www.goodreads.com/book/show/205360775",
     excerpt: "Dear Reader! Welcome to the world of MOD – the Master of Personal Excellence."
   },
   {
     title: "Is the Algorithm Plotting Against Us?: A Layperson's Guide to the Concepts, Math, and Pitfalls of AI",
     author: "Kenneth Wenger",
-    year: "n.d.",
+    year: "May 1, 2023",
     href: "https://www.goodreads.com/book/show/147984171",
     excerpt: "Artificial intelligence is everywhere—it’s in our houses and phones and cars."
   },
   {
     title: "Many Voices One Song: Shared Power with Sociocracy",
     author: "Ted J. Rau",
-    year: "n.d.",
+    year: "January 1, 2018",
     href: "https://www.goodreads.com/book/show/39462406",
     excerpt: "Imagine a world where all people meet each other as equals."
   },
   {
     title: "Mastering Uncertainty",
     author: "Matt Watkinson",
-    year: "n.d.",
+    year: "March 28, 2023",
     href: "https://www.goodreads.com/book/show/61646824",
     excerpt: "What separates the world’s most successful founders, entrepreneurs and business leaders from the rest?"
   },
   {
     title: "Obviously Awesome: How to Nail Product Positioning so Customers Get It, Buy It, Love It",
     author: "April Dunford",
-    year: "n.d.",
+    year: "May 14, 2019",
     href: "https://www.goodreads.com/book/show/45166937",
     excerpt: "You know your product is awesome—but does anybody else?"
   },
   {
-    title: "Sila czy Moc (Polish Edition)",
+    title: "Power vs. Force: The Hidden Determinants of Human Behavior",
     author: "David R. Hawkins",
-    year: "n.d.",
-    href: "https://www.goodreads.com/book/show/58833931",
-    excerpt: "Caution! No English version! Polish release."
+    year: "June 1, 1985",
+    href: "https://www.goodreads.com/book/show/19795.Power_vs_Force",
+    excerpt: "A framework for understanding how levels of consciousness influence human behavior, decisions, and collective systems."
   },
   {
     title: "The 59 keys for understanding the beginning of life (Library of The Physic of Life Book 2)",
     author: "Jan Kubań",
-    year: "n.d.",
+    year: "April 7, 2019",
     href: "https://www.goodreads.com/book/show/49584808",
     excerpt: "The 59 keys for understanding the beginning of life presents a coherent theory of the origin of life on Earth."
   },
   {
     title: "The Art of Explanation",
     author: "Ros Atkins",
-    year: "n.d.",
+    year: "September 14, 2023",
     href: "https://www.goodreads.com/book/show/64631477",
     excerpt: "Explanation - conveying meaning - is an art."
   },
   {
     title: "The Illusion of Innovation: Escape \"Efficiency\" and Unleash Radical Progress",
     author: "Elliott Parker",
-    year: "n.d.",
+    year: "April 16, 2024",
     href: "https://www.goodreads.com/book/show/198280033",
     excerpt: "Our institutions are failing us. Corporations, governments, and universities all seem less capable of confronting challenges and opportunities than they once were.  The irony is that our..."
   },
   {
     title: "The Power of Discipline: How to Use Self Control and Mental Toughness to Achieve Your Goals",
     author: "Daniel Walter",
-    year: "n.d.",
+    year: "May 5, 2020",
     href: "https://www.goodreads.com/book/show/53500087",
     excerpt: "Have you spent weeks, months, or even years trying to achieve your goals but keep failing?"
   },
   {
     title: "The Private Equity Playbook: Management’s Guide to Working with Private Equity",
     author: "Adam Coffey",
-    year: "n.d.",
+    year: "February 26, 2019",
     href: "https://www.goodreads.com/book/show/44143328",
     excerpt: "Private equity firms are on the rise and rapidly changing the game."
   },
   {
     title: "The Skill Code: How to Save Human Ability in an Age of Intelligent Machines",
     author: "Matt Beane",
-    year: "n.d.",
+    year: "June 11, 2024",
     href: "https://www.goodreads.com/book/show/199534421",
     excerpt: "From one of the world’s top researchers on work and technology comes an insightful and surprising guide to protecting your skill in a world filling with AI and robots."
   },
   {
     title: "The Tears That Taught Me",
     author: "Morgan Richard Olivier",
-    year: "n.d.",
+    year: "January 1, 2022",
     href: "https://www.goodreads.com/book/show/60650000",
     excerpt: "With unapologetically honest reflections and revelations—Morgan Richard Olivier embraces the tears, trials, and triumphs one experiences when seeking development, direction, and detachment."
   },
   {
     title: "Think Faster, Talk Smarter: How to Speak Successfully When You're Put on the Spot",
     author: "Matt Abrahams",
-    year: "n.d.",
+    year: "September 26, 2023",
     href: "https://www.goodreads.com/book/show/101021597",
     excerpt: "Develop the life-changing ability to excel in spontaneous communication situations—from public speaking to interviewing to networking—with these essential strategies from a Stanford..."
   },
   {
     title: "True Age: Cutting-Edge Research to Help Turn Back the Clock",
     author: "Morgan Levine",
-    year: "n.d.",
+    year: "May 3, 2022",
     href: "https://www.goodreads.com/book/show/58735037",
     excerpt: "Cutting-edge research shows how to determine and decrease your true biological age."
   },
   {
     title: "Unfair Marketing: Drive Marketing Success by Leveraging Your Company's Unique Strengths",
     author: "David Rodnitzky",
-    year: "n.d.",
+    year: "July 13, 2021",
     href: "https://www.goodreads.com/book/show/58550291",
     excerpt: "Your company has an unfair advantage over the competition—and it’s an advantage just waiting for you to leverage it."
   },
   {
     title: "Women Holding Things: A Moving Art Book About Exploring the Profound in Everyday Life",
     author: "Maira Kalman",
-    year: "n.d.",
+    year: "October 18, 2022",
     href: "https://www.goodreads.com/book/show/60194116",
     excerpt: "From the critically acclaimed artist, designer, and author of the bestsellers The Principles of Uncertainty and My Favorite Things comes a wondrous collection of words and paintings that is..."
   },
   {
     title: "زنی كه مردش را گم كرد",
     author: "صادق هدایت",
-    year: "n.d.",
+    year: "July 1933",
     href: "https://www.goodreads.com/book/show/1894214",
     excerpt: "صبح زود در ايستگاه قلهك آژان قد كوتاه صورت سرخي به شوفر اتومبيلي كه آنجا ايستاده بود زن بچه بغلي رانشان داد و گفت:- اين زن مي خواسته برود مازندران اينجا آمده ، او را بشهر برسانيد ثواب دارد..."
   },
   {
     title: "سه قطره خون",
     author: "صادق هدایت",
-    year: "n.d.",
+    year: "July 1932",
     href: "https://www.goodreads.com/book/show/66608",
     excerpt: "داستان ایرانی ــ ۲۱ «سه قطره خون» از روان-داستان‌های صادق هدایت است که بیشتر در کنار «بوف کور» و «زنده بگور» مورد نقد و بررسی قرار گرفته است."
   },
+  {
+    title: "American Gods (American Gods, #1)",
+    author: "Neil Gaiman",
+    year: "2001",
+    href: "https://www.goodreads.com/book/show/30165203-american-gods",
+    excerpt: "A mythic journey across America where old gods, new powers, belief, and identity collide."
+  },
+  {
+    title: "Norse Mythology",
+    author: "Neil Gaiman",
+    year: "2017",
+    href: "https://www.goodreads.com/book/show/37903770-norse-mythology",
+    excerpt: "A vivid retelling of the Norse myths, from the origins of the gods to the final upheaval of Ragnarok."
+  },
+  {
+    title: "Good Omens",
+    author: "Terry Pratchett & Neil Gaiman",
+    year: "May 10, 1990",
+    href: "https://www.goodreads.com/book/show/12067.Good_Omens",
+    excerpt: "An angel and a demon form an unlikely alliance to prevent an apocalypse neither of them particularly wants."
+  },
 ];
+
+const publicationTimestamp = (value: string) => {
+  if (value === "n.d.") return Number.NEGATIVE_INFINITY;
+  const timestamp = Date.parse(value);
+  return Number.isNaN(timestamp) ? Number.NEGATIVE_INFINITY : timestamp;
+};
+
+export const books: Book[] = rawBooks.sort(
+  (a, b) => publicationTimestamp(b.year) - publicationTimestamp(a.year)
+);
