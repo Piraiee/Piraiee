@@ -1,0 +1,162 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const meetingSources = ["Startup Grind", "Venture Cafe", "Google for Startups", "Pitch Me Baby", "Other"];
+const stages = ["Idea", "MVP", "Early users", "Revenue", "Scaling", "Corporate initiative"];
+const ratings = ["Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agree"];
+const statements = [
+  ["priorities", "The session helped clarify our priorities."],
+  ["narrative", "The session improved our pitch or narrative."],
+  ["market", "The session helped us better understand our market or users."],
+  ["strategy", "The session supported us in identifying strategic next steps."],
+  ["confidence", "The session boosted our team's confidence."],
+  ["next_steps", "The session helped us find next steps on key issues."],
+  ["actionable", "The feedback was actionable and tailored."],
+  ["respectful", "The session was honest and respectful."]
+];
+---
+
+<BaseLayout
+  title="Mentoring feedback"
+  description="Private mentoring-session feedback for Ahmad Piraiee."
+  robots="noindex,nofollow,noarchive"
+>
+  <header class="feedback-hero">
+    <p class="eyebrow">Private feedback</p>
+    <h1>Your insight matters.</h1>
+    <p>I'd love to hear how our time together helped. Your honest feedback shapes how I support future founders.</p>
+  </header>
+
+  <section class="feedback-panel" aria-labelledby="feedback-form-title">
+    <div class="feedback-intro">
+      <p class="eyebrow">Mentoring session</p>
+      <h2 id="feedback-form-title">Help me make the next conversation better.</h2>
+      <p>Your responses are private unless you explicitly allow me to share your testimonial.</p>
+    </div>
+
+    <form class="contact-form feedback-form" action="/api/lead" method="post" data-feedback-form>
+      <input type="hidden" name="source" value="piraiee.com/feedback" />
+      <input type="hidden" name="topic" value="Mentoring Session Feedback" />
+      <div class="feedback-name-grid">
+        <label>
+          <span>First name</span>
+          <input name="first_name" autocomplete="given-name" required />
+        </label>
+        <label>
+          <span>Last name</span>
+          <input name="last_name" autocomplete="family-name" required />
+        </label>
+      </div>
+
+      <div class="feedback-field-grid">
+        <label>
+          <span>Company name</span>
+          <input name="company" autocomplete="organization" />
+        </label>
+        <label>
+          <span>Website</span>
+          <input name="website" type="url" inputmode="url" placeholder="https://" />
+        </label>
+        <label>
+          <span>Email</span>
+          <input name="email" type="email" autocomplete="email" required />
+        </label>
+        <label>
+          <span>Phone</span>
+          <input name="phone" type="tel" autocomplete="tel" />
+        </label>
+        <label>
+          <span>Where did we meet?</span>
+          <select name="meeting_source" required>
+            <option value="" selected disabled>Select an option</option>
+            {meetingSources.map((item) => <option value={item}>{item}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>What stage is your startup currently in?</span>
+          <select name="stage" required>
+            <option value="" selected disabled>Select an option</option>
+            {stages.map((item) => <option value={item}>{item}</option>)}
+          </select>
+        </label>
+      </div>
+
+      <fieldset class="feedback-ratings">
+        <legend>Indicate your level of agreement</legend>
+        {statements.map(([key, statement], statementIndex) => (
+          <fieldset class="rating-row">
+            <legend>{statement}</legend>
+            <div class="rating-options">
+              {ratings.map((rating, ratingIndex) => {
+                const id = `rating-${statementIndex}-${ratingIndex}`;
+                return (
+                  <label for={id}>
+                    <input id={id} type="radio" name={`rating_${key}`} value={rating} required />
+                    <span>{rating}</span>
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
+        ))}
+      </fieldset>
+
+      <label class="feedback-wide-field">
+        <span>If you'd like, leave a short testimonial I can share</span>
+        <textarea name="testimonial" rows="5"></textarea>
+      </label>
+
+      <fieldset class="feedback-choice feedback-wide-field">
+        <legend>May I use your testimonial publicly, for example on my website or LinkedIn?</legend>
+        <div>
+          <label><input type="radio" name="testimonial_permission" value="Yes" required /><span>Yes</span></label>
+          <label><input type="radio" name="testimonial_permission" value="No" required /><span>No</span></label>
+        </div>
+      </fieldset>
+
+      <label class="feedback-wide-field">
+        <span>Would you like me to follow up with you or your team?</span>
+        <select name="follow_up" required>
+          <option value="" selected disabled>Select an option</option>
+          <option value="Yes, please follow up">Yes, please follow up</option>
+          <option value="Not right now">Not right now</option>
+          <option value="I will get in touch">I will get in touch</option>
+        </select>
+      </label>
+
+      <label class="feedback-consent feedback-wide-field">
+        <input name="privacy_consent" type="checkbox" value="I agree" required />
+        <span>I agree to the processing of my information for evaluating mentoring outcomes and, only where permitted above, publishing my testimonial. See the <a href="/privacy/" target="_blank">Privacy Policy</a>.</span>
+      </label>
+
+      <p class="feedback-status feedback-wide-field" role="status" aria-live="polite" data-feedback-status></p>
+      <button class="feedback-submit feedback-wide-field" type="submit">Send feedback</button>
+    </form>
+  </section>
+</BaseLayout>
+
+<script>
+  const feedbackForm = document.querySelector<HTMLFormElement>("[data-feedback-form]");
+  const feedbackStatus = document.querySelector<HTMLElement>("[data-feedback-status]");
+
+  feedbackForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const submitButton = feedbackForm.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (submitButton) submitButton.disabled = true;
+    if (feedbackStatus) feedbackStatus.textContent = "Sending your feedback...";
+
+    try {
+      const formData = new FormData(feedbackForm);
+      const fullName = `${formData.get("first_name") || ""} ${formData.get("last_name") || ""}`.trim();
+      formData.set("name", fullName);
+      formData.set("message", String(formData.get("testimonial") || "Mentoring session feedback submitted."));
+      const response = await fetch(feedbackForm.action, { method: "POST", body: formData });
+      const result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.error || "Unable to send your feedback.");
+      window.location.assign("/");
+    } catch (error) {
+      if (feedbackStatus) feedbackStatus.textContent = error instanceof Error ? error.message : "Unable to send your feedback.";
+      if (submitButton) submitButton.disabled = false;
+    }
+  });
+</script>
