@@ -1560,15 +1560,18 @@ p {
 }
 
 .founder-rationale {
-  align-items: start;
+  display: block;
 }
 
 .founder-rationale .story-copy {
-  padding-top: 31px;
+  margin-top: clamp(34px, 4vw, 56px);
+  max-width: 1120px;
+  padding-top: 0;
 }
 
 .founder-rationale .story-copy p {
   margin-bottom: 0;
+  max-width: none;
 }
 
 .startup-support-list {
