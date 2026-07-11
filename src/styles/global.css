@@ -493,26 +493,26 @@ button:hover {
 .process-list article {
   border-top: 1px solid var(--line);
   display: grid;
-  gap: 14px 32px;
-  grid-template-columns: minmax(300px, 0.9fr) minmax(280px, 1fr);
-  grid-template-rows: auto 1fr;
+  gap: 24px;
+  grid-template-columns: 70px minmax(220px, 0.78fr) minmax(280px, 1fr);
   padding: clamp(68px, 7vw, 96px) 0;
 }
 
 .process-list article > span {
   grid-column: 1;
   grid-row: 1;
+  padding-top: 4px;
 }
 
 .process-list article > h3 {
-  grid-column: 1;
-  grid-row: 2;
+  grid-column: 2;
+  grid-row: 1;
 }
 
 .process-list article > p {
   align-self: start;
-  grid-column: 2;
-  grid-row: 2;
+  grid-column: 3;
+  grid-row: 1;
 }
 
 .process-list article:last-child {
@@ -2882,6 +2882,7 @@ textarea {
     align-self: center;
     grid-column: 1;
     grid-row: 1;
+    padding-top: 0;
   }
 
   .process-list article > h3 {
