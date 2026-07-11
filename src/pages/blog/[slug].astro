@@ -16,17 +16,35 @@ const formatDate = (date: string) => {
     .toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
     .toUpperCase();
 };
+
+const stripHtml = (value: string) => value.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").trim();
+const isLegacyTagLine = (html: string) => {
+  const text = stripHtml(html).replace(/^Tags:\s*/i, "");
+  return text.length > 1 && text.length < 110 && !/[.!?]$/.test(text) && /,|\|/.test(text);
+};
+const cleanContent = (value: string) => {
+  let cleaned = value.replace(
+    /<div>\s*<h4>\s*<strong>\s*Subscribe to Startup Digest to stay ahead with the latest news, investments, and must-attend events\.\s*<\/strong>\s*<\/h4>\s*<\/div>/gi,
+    ""
+  );
+  cleaned = cleaned.replace(/<p>([\s\S]*?)<\/p>/gi, (match, content) =>
+    isLegacyTagLine(content) ? "" : match
+  );
+  return cleaned;
+};
+
+const articleContent = cleanContent(post.content);
 ---
 
 <BaseLayout title={post.title} description={post.excerpt}>
   <article class="article">
-    <p class="eyebrow">{post.category}</p>
+    <a class="eyebrow article-category" href={`/blog/?category=${encodeURIComponent(post.category)}`}>{post.category}</a>
     <h1>{post.title}</h1>
     <time datetime={post.date}>{formatDate(post.date)}</time>
     <p class="lead">{post.excerpt}</p>
     <figure class="featured-image">
       <img src={post.featuredImage} alt={`${post.title} featured visual`} />
     </figure>
-    <div class="article-content" set:html={post.content} />
+    <div class="article-content" set:html={articleContent} />
   </article>
 </BaseLayout>

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import BackToTop from "../../components/BackToTop.astro";
 import { posts, writingCategories } from "../../data/posts";
 
 const formatDate = (date: string) => {
@@ -95,9 +96,7 @@ const formatDate = (date: string) => {
     ))}
   </div>
   <p class="writing-empty" id="writing-empty" hidden>No writings match this search yet.</p>
-  <button class="writing-to-top" type="button" aria-label="Back to top" title="Back to top" hidden>
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 14 6-6 6 6" /></svg>
-  </button>
+  <BackToTop />
 
   <script>
     const searchInput = document.querySelector<HTMLInputElement>("#writing-search-input");
@@ -108,7 +107,9 @@ const formatDate = (date: string) => {
     const categoryToggle = document.querySelector<HTMLButtonElement>(".writing-category-toggle");
     const categoryPanel = document.querySelector<HTMLElement>("#writing-category-panel");
     const categoryClose = document.querySelector<HTMLButtonElement>(".writing-category-close");
-    const toTop = document.querySelector<HTMLButtonElement>(".writing-to-top");
+    const categoryScroller = document.querySelector<HTMLElement>(".writing-categories");
+    const categoryCue = document.querySelector<HTMLElement>(".writing-category-scroll-cue");
+    const categoryCueThumb = categoryCue?.querySelector<HTMLElement>("span");
     const empty = document.querySelector<HTMLElement>("#writing-empty");
     const rail = document.querySelector<HTMLElement>(".writing-rail");
     const railTrack = document.querySelector<HTMLElement>("[data-writing-rail-track]");
@@ -119,9 +120,30 @@ const formatDate = (date: string) => {
     let activeCategory = "All";
     let visibleRows = rows;
     let isDraggingRail = false;
+    let isDraggingCategories = false;
 
     const pluralize = (value: number) => value + " " + (value === 1 ? "writing" : "writings");
     const isMobileFilter = () => window.matchMedia("(max-width: 620px)").matches;
+
+    const updateCategoryCue = () => {
+      if (!categoryScroller || !categoryCue || !categoryCueThumb || isMobileFilter()) return;
+      const overflow = categoryScroller.scrollWidth - categoryScroller.clientWidth;
+      categoryCue.hidden = overflow <= 1;
+      if (overflow <= 1) return;
+      const thumbWidth = Math.max(42, categoryCue.clientWidth * categoryScroller.clientWidth / categoryScroller.scrollWidth);
+      const travel = categoryCue.clientWidth - thumbWidth;
+      categoryCueThumb.style.width = thumbWidth + "px";
+      categoryCueThumb.style.transform = `translateX(${travel * categoryScroller.scrollLeft / overflow}px)`;
+    };
+
+    const scrubCategories = (clientX: number) => {
+      if (!categoryScroller || !categoryCue || !categoryCueThumb) return;
+      const rect = categoryCue.getBoundingClientRect();
+      const thumbWidth = categoryCueThumb.getBoundingClientRect().width;
+      const travel = Math.max(1, rect.width - thumbWidth);
+      const progress = Math.min(1, Math.max(0, (clientX - rect.left - thumbWidth / 2) / travel));
+      categoryScroller.scrollLeft = progress * (categoryScroller.scrollWidth - categoryScroller.clientWidth);
+    };
 
     const setCategoryPanel = (open: boolean) => {
       if (!categoryPanel || !categoryToggle) return;
@@ -222,16 +244,21 @@ const formatDate = (date: string) => {
     searchInput?.addEventListener("input", applyFilters);
     categoryToggle?.addEventListener("click", () => setCategoryPanel(Boolean(categoryPanel?.hidden)));
     categoryClose?.addEventListener("click", () => setCategoryPanel(false));
-    toTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+    categoryScroller?.addEventListener("scroll", updateCategoryCue, { passive: true });
+    categoryCue?.addEventListener("pointerdown", (event) => {
+      isDraggingCategories = true;
+      categoryCue.setPointerCapture(event.pointerId);
+      scrubCategories(event.clientX);
+    });
+    categoryCue?.addEventListener("pointermove", (event) => {
+      if (isDraggingCategories) scrubCategories(event.clientX);
+    });
+    categoryCue?.addEventListener("pointerup", () => { isDraggingCategories = false; });
 
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && categoryPanel && !categoryPanel.hidden) setCategoryPanel(false);
     });
 
-    const updateToTop = () => {
-      if (!toTop) return;
-      toTop.hidden = window.scrollY <= window.innerHeight * 2;
-    };
 
     railTrack?.addEventListener("pointerdown", (event) => {
       if (window.innerWidth < 1180) return;
@@ -264,16 +291,24 @@ const formatDate = (date: string) => {
 
     window.addEventListener("scroll", () => {
       updateRail();
-      updateToTop();
     }, { passive: true });
     window.addEventListener("resize", () => {
       updateRail();
-      updateToTop();
+      updateCategoryCue();
       if (categoryPanel && !categoryPanel.hidden) {
         document.body.classList.toggle("writing-categories-open", isMobileFilter());
       }
     });
+
+    const requestedCategory = new URLSearchParams(window.location.search).get("category");
+    if (requestedCategory) {
+      const requestedButton = buttons.find((button) => button.dataset.category === requestedCategory);
+      if (requestedButton) {
+        activeCategory = requestedCategory;
+        buttons.forEach((button) => button.classList.toggle("is-active", button === requestedButton));
+      }
+    }
     applyFilters();
-    updateToTop();
+    requestAnimationFrame(updateCategoryCue);
   </script>
 </BaseLayout>

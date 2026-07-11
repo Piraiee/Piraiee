@@ -71,19 +71,23 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
   </section>
 
-  <section class="about-services about-services-profile">
-    <figure class="profile-card capabilities-profile-card">
-      <img src="/assets/brand/ahmad-piraiee-portrait-new.png" alt="Portrait of Ahmad Piraiee" />
-      <figcaption>
-        <span>Strategist</span>
-        <strong>Ahmad Piraiee</strong>
-      </figcaption>
-    </figure>
-
-    <div class="about-services-content">
+  <section class="about-services about-services-profile" id="capabilities">
+    <header class="about-services-heading">
       <p class="eyebrow">Capabilities</p>
       <h2>How I help organizations move forward.</h2>
-      <div class="accordion-list large-accordion">
+    </header>
+
+    <div class="about-services-grid">
+      <figure class="profile-card capabilities-profile-card">
+        <img src="/assets/brand/ahmad-piraiee-portrait-new.png" alt="Portrait of Ahmad Piraiee" />
+        <figcaption>
+          <span>Strategist</span>
+          <strong>Ahmad Piraiee</strong>
+        </figcaption>
+      </figure>
+
+      <div class="about-services-content">
+        <div class="accordion-list large-accordion">
       <details open>
         <summary>Strategic Clarity</summary>
         <p>
@@ -135,6 +139,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           focused on entrepreneurship, innovation, AI, leadership, and strategic thinking.
         </p>
       </details>
+        </div>
       </div>
     </div>
   </section>

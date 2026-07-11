@@ -1,0 +1,18 @@
+<button class="back-to-top" type="button" aria-label="Back to top" title="Back to top" hidden>
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="m6 14 6-6 6 6" />
+  </svg>
+</button>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>(".back-to-top");
+
+  const update = () => {
+    if (button) button.hidden = window.scrollY <= window.innerHeight * 2;
+  };
+
+  button?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update, { passive: true });
+  update();
+</script>
