@@ -3090,6 +3090,12 @@ textarea {
   }
 }
 
+/* Commands stay calm and legible across every component variant. */
+button,
+.button {
+  font-weight: 500 !important;
+}
+
 .feedback-hero {
   min-height: 72svh;
   padding: clamp(150px, 20vh, 230px) max(6vw, 28px) clamp(84px, 11vh, 130px);
