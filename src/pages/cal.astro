@@ -55,12 +55,11 @@ const errorMessage = error === "invalid"
     ) : (
       <main class="cal-lock-shell" id="main">
         <section class="cal-lock-panel" aria-labelledby="cal-lock-title">
-          <a class="cal-domain" href="/">piraiee.com</a>
           <p class="cal-kicker">Private scheduling</p>
-          <h1 id="cal-lock-title">Arrange a meeting.</h1>
-          <p>Enter the access password to see Ahmad's live availability.</p>
+          <h1 id="cal-lock-title">Schedule a meeting.</h1>
+          <p>Use your private access code to view my live availability and book a time that works for both of us.</p>
           <form action="/api/cal-auth" method="post" class="cal-lock-form">
-            <label for="cal-password">Password</label>
+            <label for="cal-password">Access code</label>
             <div class="cal-password-field">
               <input id="cal-password" name="password" type="password" autocomplete="current-password" required autofocus aria-describedby={errorMessage ? "cal-error" : undefined} />
               <button type="submit">Continue <span aria-hidden="true">↗</span></button>

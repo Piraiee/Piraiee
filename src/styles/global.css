@@ -3074,14 +3074,9 @@ textarea {
   border-radius: 22px;
   box-shadow: 0 28px 90px rgba(32, 43, 65, 0.14);
   margin: auto;
-  max-width: 720px;
+  max-width: 660px;
   padding: clamp(32px, 7vw, 72px);
   width: 100%;
-}
-
-.cal-domain {
-  display: inline-block;
-  margin-bottom: clamp(70px, 12vh, 140px);
 }
 
 .cal-lock-panel > p:not(.cal-kicker) {
@@ -3184,12 +3179,8 @@ textarea {
 
   .cal-lock-panel {
     border-radius: 18px;
-    min-height: calc(100vh - 24px);
-    padding: 30px 24px;
-  }
-
-  .cal-domain {
-    margin-bottom: 26vh;
+    min-height: 0;
+    padding: 42px 24px;
   }
 
   .cal-password-field {
