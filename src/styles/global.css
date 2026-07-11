@@ -2312,6 +2312,13 @@ textarea {
 }
 
 @media (max-width: 620px) {
+  .nav-shell {
+    border-radius: 12px;
+  }
+
+  .site-header.menu-open .nav-shell {
+    border-radius: 16px;
+  }
   body {
     background-size: 60px 60px, 60px 60px, auto, auto;
     font-size: 16px;
@@ -2389,24 +2396,97 @@ textarea {
   }
 
   .metric-band > div {
-    min-height: 118px;
-    padding: 30px;
+    min-height: 104px;
+    padding: 22px 26px;
+  }
+
+  .metric-content {
+    align-items: center;
+    display: grid;
+    gap: 22px;
+    grid-template-columns: minmax(0, auto) minmax(76px, 1fr);
+    width: 100%;
   }
 
   .metric-band strong {
-    font-size: 58px;
+    font-size: clamp(48px, 15vw, 62px);
+  }
+
+  .metric-band span {
+    line-height: 1.55;
+    margin-top: 0;
+    max-width: 92px;
+    text-align: left;
   }
 
   .home-deal-grid {
     grid-template-columns: 1fr;
+    gap: 0;
+    padding-block: 14px 20px;
   }
 
   .home-deal-card {
-    aspect-ratio: 1 / 0.72;
+    align-items: center;
+    aspect-ratio: auto;
+    border-width: 1px 0 0;
+    display: grid;
+    gap: 18px;
+    grid-template-columns: minmax(86px, 0.42fr) minmax(0, 1fr);
+    min-height: 104px;
+    padding: 24px 4px;
+    text-align: left;
+  }
+
+  .home-deal-card:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .home-deal-card > span {
+    margin: 0;
+    text-align: left;
+  }
+
+  .home-deal-card h3 {
+    font-size: clamp(30px, 9vw, 40px);
+    text-align: left;
   }
 
   .trusted-strip {
     margin-bottom: 82px;
+  }
+
+  .trusted-logos {
+    gap: 26px 22px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    opacity: 1;
+  }
+
+  .trusted-logos img {
+    filter: grayscale(1) contrast(1.7) brightness(0.58);
+    max-height: 48px;
+    opacity: 0.82;
+  }
+
+  .process-list article {
+    gap: 26px 16px;
+    grid-template-columns: 42px minmax(0, 1fr);
+  }
+
+  .process-list article > span {
+    align-self: center;
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .process-list article > h3 {
+    align-self: center;
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .process-list article > p {
+    grid-column: 1 / -1;
+    grid-row: 2;
   }
 
   .split-section {
