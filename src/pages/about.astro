@@ -3,15 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="About" description="About Ahmad Piraiee, strategist, venture builder, and execution partner.">
-  <section class="about-profile">
-    <figure class="profile-card">
-      <img src="/assets/brand/ahmad-piraiee-portrait-new.png" alt="Portrait of Ahmad Piraiee" />
-      <figcaption>
-        <span>Strategist</span>
-        <strong>Ahmad Piraiee</strong>
-      </figcaption>
-    </figure>
-
+  <section class="about-profile about-profile-intro">
     <div class="profile-copy">
       <p class="eyebrow">/ 02 / About</p>
       <h1>Turning uncertainty into execution.</h1>
@@ -79,10 +71,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
   </section>
 
-  <section class="about-services">
-    <p class="eyebrow">Capabilities</p>
-    <h2>How I help organizations move forward.</h2>
-    <div class="accordion-list large-accordion">
+  <section class="about-services about-services-profile">
+    <figure class="profile-card capabilities-profile-card">
+      <img src="/assets/brand/ahmad-piraiee-portrait-new.png" alt="Portrait of Ahmad Piraiee" />
+      <figcaption>
+        <span>Strategist</span>
+        <strong>Ahmad Piraiee</strong>
+      </figcaption>
+    </figure>
+
+    <div class="about-services-content">
+      <p class="eyebrow">Capabilities</p>
+      <h2>How I help organizations move forward.</h2>
+      <div class="accordion-list large-accordion">
       <details open>
         <summary>Strategic Clarity</summary>
         <p>
@@ -134,6 +135,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           focused on entrepreneurship, innovation, AI, leadership, and strategic thinking.
         </p>
       </details>
+      </div>
     </div>
   </section>
 

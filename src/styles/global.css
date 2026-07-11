@@ -550,6 +550,19 @@ p {
   padding-block: 92px 110px;
 }
 
+.about-profile-intro {
+  display: block;
+}
+
+.about-profile-intro .profile-copy {
+  margin-inline: auto;
+  max-width: 1120px;
+}
+
+.about-profile-intro .profile-copy h1 {
+  max-width: 980px;
+}
+
 .profile-card {
   border: 2px solid var(--navy);
   border-radius: 30px;
@@ -694,12 +707,27 @@ p {
   display: block;
 }
 
+.about-services-profile {
+  align-items: start;
+  display: grid;
+  gap: clamp(48px, 6vw, 92px);
+  grid-template-columns: minmax(300px, 0.72fr) minmax(0, 1.28fr);
+}
+
+.about-services-content {
+  min-width: 0;
+}
+
+.capabilities-profile-card {
+  min-height: 720px;
+}
+
 .about-services h2 {
   max-width: 980px;
 }
 
 .about-services .large-accordion {
-  margin-top: 76px;
+  margin-top: 48px;
   width: 100%;
 }
 
@@ -2089,6 +2117,14 @@ textarea {
     padding-block: 76px 88px;
   }
 
+  .about-services-profile {
+    grid-template-columns: 1fr;
+  }
+
+  .capabilities-profile-card {
+    min-height: 620px;
+  }
+
   .profile-card {
     min-height: 620px;
   }
@@ -2332,6 +2368,10 @@ textarea {
   .profile-card {
     border-radius: 24px;
     min-height: 520px;
+  }
+
+  .about-services-profile {
+    gap: 54px;
   }
 
   .profile-card figcaption {
