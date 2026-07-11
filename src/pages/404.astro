@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Page not found"
+  description="This page could not be found. Return to piraiee.com."
+  robots="noindex,nofollow,noarchive"
+>
+  <section class="not-found" aria-labelledby="not-found-title">
+    <div class="not-found-copy">
+      <p class="eyebrow">/ 404 / Off course</p>
+      <h1 id="not-found-title">Lost?</h1>
+      <p>Unclear paths happen.<br />The important part is finding the right direction.</p>
+      <a class="button not-found-button" href="/">Return to the homepage ↗</a>
+      <p class="not-found-note">From uncertainty to execution.</p>
+    </div>
+
+    <div class="direction-mark" aria-hidden="true">
+      <span class="route route-one"></span>
+      <span class="route route-two"></span>
+      <span class="route route-three"></span>
+      <span class="route route-four"></span>
+      <span class="route route-five"></span>
+      <span class="direction-line"></span>
+      <span class="direction-arrow"></span>
+    </div>
+  </section>
+</BaseLayout>
