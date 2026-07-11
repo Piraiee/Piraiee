@@ -1,0 +1,126 @@
+---
+import {
+  getCalCookieName,
+  isValidCalSession
+} from "../lib/calAuth";
+import "../styles/global.css";
+
+export const prerender = false;
+
+const env = Astro.locals.runtime?.env ?? {};
+const session = Astro.cookies.get(getCalCookieName())?.value;
+const isUnlocked = await isValidCalSession(session, env.CAL_AUTH_SECRET || "");
+const error = Astro.url.searchParams.get("error");
+const errorMessage = error === "invalid"
+  ? "That password is not correct. Please try again."
+  : error === "setup"
+    ? "Private scheduling is not configured yet."
+    : "";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Private scheduling | Ahmad Piraiee</title>
+    <meta name="description" content="Private meeting scheduling with Ahmad Piraiee." />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <meta name="referrer" content="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+  </head>
+  <body class="cal-page">
+    {isUnlocked ? (
+      <main class="cal-shell" id="main">
+        <header class="cal-header">
+          <div>
+            <p class="cal-kicker">Private scheduling</p>
+            <h1>Find a time that works.</h1>
+          </div>
+          <a href="/" aria-label="Return to piraiee.com">piraiee.com</a>
+        </header>
+        <p class="cal-intro">Choose a 30-minute or one-hour meeting. Availability is shown in your timezone.</p>
+        <section class="cal-embed-frame" aria-label="Meeting availability">
+          <div id="cal-inline" class="cal-embed"></div>
+          <noscript>
+            <p class="cal-noscript">JavaScript is required to view availability. <a href="https://cal.id/piraiee/1-1">Open scheduling</a>.</p>
+          </noscript>
+        </section>
+      </main>
+    ) : (
+      <main class="cal-lock-shell" id="main">
+        <section class="cal-lock-panel" aria-labelledby="cal-lock-title">
+          <a class="cal-domain" href="/">piraiee.com</a>
+          <p class="cal-kicker">Private scheduling</p>
+          <h1 id="cal-lock-title">Arrange a meeting.</h1>
+          <p>Enter the access password to see Ahmad's live availability.</p>
+          <form action="/api/cal-auth" method="post" class="cal-lock-form">
+            <label for="cal-password">Password</label>
+            <div class="cal-password-field">
+              <input id="cal-password" name="password" type="password" autocomplete="current-password" required autofocus aria-describedby={errorMessage ? "cal-error" : undefined} />
+              <button type="submit">Continue <span aria-hidden="true">↗</span></button>
+            </div>
+            {errorMessage && <p class="cal-error" id="cal-error" role="alert">{errorMessage}</p>}
+          </form>
+        </section>
+      </main>
+    )}
+
+    {isUnlocked && (
+      <script is:inline>
+        (function (C, A, L) {
+          const p = function (a, ar) { a.q.push(ar); };
+          const d = C.document;
+          C.Cal = C.Cal || function () {
+            const cal = C.Cal;
+            const ar = arguments;
+            if (!cal.loaded) {
+              cal.ns = {};
+              cal.q = cal.q || [];
+              const script = d.createElement("script");
+              script.src = A;
+              d.head.appendChild(script);
+              cal.loaded = true;
+            }
+            if (ar[0] === L) {
+              const api = function () { p(api, arguments); };
+              const namespace = ar[1];
+              api.q = api.q || [];
+              if (typeof namespace === "string") {
+                cal.ns[namespace] = cal.ns[namespace] || api;
+                p(cal.ns[namespace], ar);
+                p(cal, ["initNamespace", namespace]);
+              } else p(cal, ar);
+              return;
+            }
+            p(cal, ar);
+          };
+        })(window, "https://app.cal.com/embed/embed.js", "init");
+
+        Cal("init", "private-scheduling", { origin: "https://cal.id" });
+        Cal.ns["private-scheduling"]("inline", {
+          elementOrSelector: "#cal-inline",
+          calLink: "piraiee/1-1",
+          config: { layout: "week_view" }
+        });
+        Cal.ns["private-scheduling"]("ui", {
+          styles: {
+            branding: { brandColor: "#0b1020" },
+            body: { background: "transparent" }
+          },
+          hideEventTypeDetails: false,
+          layout: "week_view"
+        });
+        Cal.ns["private-scheduling"]("on", {
+          action: "bookingSuccessfulV2",
+          callback: function () {
+            window.location.assign("https://piraiee.com/");
+          }
+        });
+      </script>
+    )}
+  </body>
+</html>

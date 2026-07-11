@@ -10,4 +10,6 @@ interface Env {
   GOOGLE_SCRIPT_URL?: string;
   TURNSTILE_SECRET_KEY?: string;
   ALLOWED_ORIGIN?: string;
+  CAL_PAGE_PASSWORD?: string;
+  CAL_AUTH_SECRET?: string;
 }

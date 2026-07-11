@@ -8,3 +8,5 @@ ALLOWED_ORIGIN = "https://piraiee.com"
 # Add these in the Cloudflare Pages dashboard, not in git:
 # GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/.../exec"
 # TURNSTILE_SECRET_KEY = "..."
+# CAL_PAGE_PASSWORD = "..."
+# CAL_AUTH_SECRET = "..."
