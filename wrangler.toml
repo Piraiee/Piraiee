@@ -7,12 +7,7 @@ ALLOWED_ORIGIN = "https://piraiee.com"
 
 # Add these in the Cloudflare Pages dashboard, not in git:
 # GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/.../exec"
+# GOOGLE_SCRIPT_SECRET = "..."
 # TURNSTILE_SECRET_KEY = "..."
 # CAL_PAGE_PASSWORD = "..."
 # CAL_AUTH_SECRET = "..."
-
-# Create an R2 bucket in Cloudflare, then uncomment and set its real name.
-# Startup pitch uploads are stored under shared/piraiee/files/.
-# [[r2_buckets]]
-# binding = "PITCH_UPLOADS"
-# bucket_name = "piraiee-files"

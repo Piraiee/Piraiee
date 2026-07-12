@@ -12,7 +12,12 @@ export function getStaticPaths() {
 const { deal } = Astro.props;
 ---
 
-<BaseLayout title={deal.name} description={deal.summary} image={deal.featuredImage}>
+<BaseLayout
+  title={`${deal.name} Deal`}
+  description={`${deal.summary} ${deal.details}`}
+  image="/social/core/deals-landscape.png"
+  imageAlt={`${deal.name} — curated offer on piraiee.com`}
+>
   <article class="article deal-article">
     <p class="eyebrow">{deal.category}</p>
     <h1>{deal.name}</h1>

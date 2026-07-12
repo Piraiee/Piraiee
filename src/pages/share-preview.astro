@@ -1,0 +1,265 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { posts } from "../data/posts";
+import { seo } from "../data/seo";
+
+const corePages = [
+  { key: "home", route: "/", meta: seo.home },
+  { key: "about", route: "/about/", meta: seo.about },
+  { key: "startups", route: "/startups/", meta: seo.startups },
+  { key: "deals", route: "/deals/", meta: seo.deals },
+  { key: "writing", route: "/blog/", meta: seo.writing },
+  { key: "reading", route: "/books/", meta: seo.reading }
+];
+
+const latestPosts = posts.slice(0, 6);
+---
+
+<BaseLayout
+  title="Social Preview Studio"
+  description="Private local preview of piraiee.com social cards."
+  image="/social/core/home-landscape.png"
+  robots="noindex,nofollow,noarchive"
+>
+  <section class="preview-hero">
+    <p class="eyebrow">LOCAL QA / UNLISTED</p>
+    <h1>Link preview studio.</h1>
+    <p>Review the images and metadata that appear when piraiee.com is shared. Landscape is the live Open Graph format; square and portrait are optional channel variants.</p>
+  </section>
+
+  <section class="preview-section" aria-labelledby="core-preview-title">
+    <div class="preview-heading">
+      <div>
+        <p class="eyebrow">CORE PAGES</p>
+        <h2 id="core-preview-title">Primary site previews.</h2>
+      </div>
+      <p>{corePages.length} pages · 3 ratios each</p>
+    </div>
+    <div class="preview-grid">
+      {corePages.map(({ key, route, meta }) => (
+        <article class="preview-card">
+          <div class="preview-card-header">
+            <div>
+              <p>{meta.label}</p>
+              <h3>{meta.title}</h3>
+            </div>
+            <a href={route}>Open page ↗</a>
+          </div>
+          <img class="preview-landscape" src={`/social/core/${key}-landscape.png`} alt={meta.imageAlt} loading="lazy" />
+          <p class="preview-description">{meta.description}</p>
+          <div class="preview-variants">
+            <figure>
+              <img src={`/social/core/${key}-square.png`} alt={`${meta.imageAlt} Square preview.`} loading="lazy" />
+              <figcaption>Square · 1:1</figcaption>
+            </figure>
+            <figure>
+              <img src={`/social/core/${key}-portrait.png`} alt={`${meta.imageAlt} Portrait preview.`} loading="lazy" />
+              <figcaption>Portrait · 4:5</figcaption>
+            </figure>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="preview-section" aria-labelledby="article-preview-title">
+    <div class="preview-heading">
+      <div>
+        <p class="eyebrow">WRITING</p>
+        <h2 id="article-preview-title">Latest article previews.</h2>
+      </div>
+      <p>Featured artwork adapted to the editorial system</p>
+    </div>
+    <div class="article-preview-grid">
+      {latestPosts.map((post) => (
+        <article class="article-preview-card">
+          <img src={post.featuredImage} alt={`Social preview for ${post.title}`} loading="lazy" />
+          <p>{post.category}</p>
+          <h3>{post.title}</h3>
+          <a href={`/blog/${post.slug}/`}>Open writing ↗</a>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .preview-hero,
+  .preview-section {
+    width: min(1180px, calc(100% - 48px));
+    margin-inline: auto;
+  }
+
+  .preview-hero {
+    padding: 150px 0 88px;
+    border-bottom: 1px solid var(--line, #dce1e9);
+  }
+
+  .preview-hero h1 {
+    max-width: 820px;
+    margin: 18px 0 26px;
+    font-size: clamp(4rem, 8vw, 7.5rem);
+    font-weight: 400;
+    line-height: .92;
+  }
+
+  .preview-hero > p:last-child {
+    max-width: 760px;
+    color: #687284;
+    font-size: 1.2rem;
+    line-height: 1.55;
+  }
+
+  .preview-section {
+    padding: 88px 0;
+  }
+
+  .preview-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+
+  .preview-heading h2 {
+    margin: 10px 0 0;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: .98;
+  }
+
+  .preview-heading > p,
+  .preview-description {
+    color: #687284;
+  }
+
+  .preview-grid,
+  .article-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .preview-card,
+  .article-preview-card {
+    border: 1px solid #dce1e9;
+    background: rgba(246, 247, 250, .78);
+    padding: 22px;
+  }
+
+  .preview-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: 94px;
+    margin-bottom: 18px;
+  }
+
+  .preview-card-header p,
+  .article-preview-card > p {
+    margin: 0 0 8px;
+    color: #687284;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .preview-card h3,
+  .article-preview-card h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+
+  .preview-card a,
+  .article-preview-card a {
+    color: inherit;
+    font-size: .82rem;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  .preview-landscape,
+  .article-preview-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid #dce1e9;
+  }
+
+  .preview-description {
+    min-height: 52px;
+    margin: 16px 0 18px;
+    line-height: 1.45;
+  }
+
+  .preview-variants {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .preview-variants figure {
+    margin: 0;
+  }
+
+  .preview-variants img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: top;
+    border: 1px solid #dce1e9;
+  }
+
+  .preview-variants figcaption {
+    margin-top: 8px;
+    color: #687284;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .article-preview-card img {
+    margin-bottom: 18px;
+  }
+
+  .article-preview-card h3 {
+    min-height: 72px;
+    margin-bottom: 18px;
+  }
+
+  @media (max-width: 760px) {
+    .preview-hero,
+    .preview-section {
+      width: min(100% - 32px, 1180px);
+    }
+
+    .preview-hero {
+      padding: 112px 0 64px;
+    }
+
+    .preview-heading {
+      display: block;
+    }
+
+    .preview-heading > p {
+      margin-top: 14px;
+    }
+
+    .preview-grid,
+    .article-preview-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .preview-card-header {
+      display: block;
+      min-height: 0;
+    }
+
+    .preview-card-header a {
+      display: inline-block;
+      margin-top: 14px;
+    }
+  }
+</style>

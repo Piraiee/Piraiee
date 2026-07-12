@@ -3,9 +3,8 @@ export const site = {
   domain: "piraiee.com",
   url: "https://piraiee.com",
   description:
-    "Ahmad Piraiee helps ambitious founders, startup ecosystems, and growth-stage companies turn market insight into commercial momentum.",
-  heroImage:
-    "https://static1.squarespace.com/static/64bbdea0e7145731da6da561/t/65636f353cb3cf6b8fa4fa90/1749668318272/Impact-main.jpg?format=1500w",
+    "Ahmad Piraiee helps founders, executives, and innovation teams challenge assumptions, validate opportunities, and turn uncertainty into executable direction.",
+  heroImage: "/social/core/home-landscape.png",
   socials: [
     { label: "Instagram", href: "https://instagram.com/piraiee" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/piraiee/" },
@@ -18,9 +17,9 @@ export const site = {
 
 export const partnerLogos = [
   { label: "CIC", src: "/assets/logos/cic.png" },
-  { label: "Startup Grind", src: "/assets/logos/startupgrind.png" },
   { label: "Techstars Startup Digest", src: "/assets/logos/techstars-startup-digest.png" },
-  { label: "Venture Cafe Global Institute", src: "/assets/logos/venture-cafe-global-institute.png" }
+  { label: "Venture Cafe Global Institute", src: "/assets/logos/venture-cafe-global-institute.png" },
+  { label: "Startup Grind", src: "/assets/logos/startupgrind.png" }
 ];
 
 export const navItems = [

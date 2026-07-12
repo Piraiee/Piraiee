@@ -4,7 +4,8 @@ import ClarityModal from "../components/ClarityModal.astro";
 import ContactForm from "../components/ContactForm.astro";
 import { deals } from "../data/deals";
 import { posts } from "../data/posts";
-import { partnerLogos, site } from "../data/site";
+import { partnerLogos } from "../data/site";
+import { seo } from "../data/seo";
 
 const homepageDealTitles: Record<string, [string, string]> = {
   "Bolt for Business": ["Bolt for", "Business"],
@@ -25,7 +26,7 @@ const homeBooks = [
 ];
 ---
 
-<BaseLayout title="Ahmad Piraiee" description={site.description}>
+<BaseLayout {...seo.home}>
   <div class="home-first-screen">
     <section class="hero syndicate-hero">
       <div class="hero-copy">
@@ -45,6 +46,12 @@ const homeBooks = [
     </section>
 
     <section class="metric-band stat-card">
+      <div>
+        <div class="metric-content">
+          <strong>20+</strong>
+          <span>Years building</span>
+        </div>
+      </div>
       <div>
         <div class="metric-content">
           <strong>95K+</strong>
@@ -68,7 +75,13 @@ const homeBooks = [
     <section class="trusted-strip">
       <p>Trusted ecosystem relationships</p>
       <div class="trusted-logos">
-        {partnerLogos.map((logo) => <img src={logo.src} alt={logo.label} />)}
+        {
+          partnerLogos.map((logo) => (
+            <div class="trusted-logo">
+              <img src={logo.src} alt={logo.label} />
+            </div>
+          ))
+        }
       </div>
     </section>
   </div>

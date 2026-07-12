@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ClarityModal from "../components/ClarityModal.astro";
 import PitchModal from "../components/PitchModal.astro";
+import { seo } from "../data/seo";
 
 const supportAreas = [
   {
@@ -59,7 +60,7 @@ const founderFit = [
 ];
 ---
 
-<BaseLayout title="Startups" description="Startup clarity, founder advisory, and AI-era venture building with Ahmad Piraiee.">
+<BaseLayout {...seo.startups}>
   <section class="page-hero startup-hero">
     <p class="eyebrow">Startups</p>
     <h1>Building a startup has changed. Most advice hasn't.</h1>

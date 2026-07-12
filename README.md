@@ -43,6 +43,7 @@ npm run deploy
 Set these in Cloudflare Pages:
 
 - `GOOGLE_SCRIPT_URL`
+- `GOOGLE_SCRIPT_SECRET`
 - `TURNSTILE_SECRET_KEY` if Turnstile is enabled
 - `ALLOWED_ORIGIN=https://piraiee.com`
 

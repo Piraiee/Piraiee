@@ -1,54 +1,24 @@
-# Google Sheets Form Backend
+# Google Forms Backend
 
-Use this when you are ready to connect the custom website form to a Google Sheet owned by `ahmad@piraiee.com`.
+The website sends validated submissions to the Apps Script in `google-apps-script/Code.gs`.
 
-## Sheet
+## Destinations
 
-Create a Google Sheet named `piraiee.com Leads` with this header row:
+- Spreadsheet: `1GWr646yfRfp77rewL8NBshGlkmWUuESDSrCIVprcoTk`
+- Upload folder: `1aj5zMWxmZqSEd94v1sHbqRagO-g6G7p-`
+- Notification recipient: `ahmad@piraiee.com`
 
-```text
-Submitted At | Name | Email | Topic | Message | Source | Page
-```
+The script creates one sheet tab per form. Every tab starts with `ID` and `Form name`, followed by submission data. Pitch attachments remain private in the Drive folder and their Drive URL is included in both the sheet and notification email.
 
-## Apps Script
+## Setup
 
-In the Sheet, open Extensions -> Apps Script and paste:
+1. Open the target spreadsheet and choose **Extensions -> Apps Script**.
+2. Replace `Code.gs` with the repository copy and enable the `appsscript.json` manifest in project settings before replacing it.
+3. Add a script property named `WEBHOOK_SECRET` with a long random value.
+4. Deploy as a web app, executing as `ahmad@piraiee.com`, with access set to **Anyone**.
+5. Set the deployment URL as the Cloudflare secret `GOOGLE_SCRIPT_URL`.
+6. Set the same random value as the Cloudflare secret `GOOGLE_SCRIPT_SECRET`.
 
-```js
-const SHEET_NAME = "Leads";
+The API reports success only when the Apps Script confirms that the row was saved and the email was sent.
 
-function doPost(e) {
-  const body = JSON.parse(e.postData.contents);
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = spreadsheet.getSheetByName(SHEET_NAME) || spreadsheet.insertSheet(SHEET_NAME);
-
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow(["Submitted At", "Name", "Email", "Topic", "Message", "Source", "Page"]);
-  }
-
-  sheet.appendRow([
-    body.submittedAt || new Date().toISOString(),
-    body.name || "",
-    body.email || "",
-    body.topic || "",
-    body.message || "",
-    body.source || "",
-    body.page || ""
-  ]);
-
-  return ContentService
-    .createTextOutput(JSON.stringify({ ok: true }))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-```
-
-Deploy it as a web app:
-
-- Execute as: `Me`
-- Who has access: `Anyone`
-
-Copy the deployment URL and set it in Cloudflare Pages as `GOOGLE_SCRIPT_URL`.
-
-## Optional Spam Protection
-
-Add a Cloudflare Turnstile widget to the form and set `TURNSTILE_SECRET_KEY` in Cloudflare Pages. The server route already verifies `cf-turnstile-response` when the secret is present.
+The private calendar access code is never included in a submission payload, sheet, log, or email.

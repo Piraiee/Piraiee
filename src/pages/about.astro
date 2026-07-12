@@ -1,8 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { seo } from "../data/seo";
 ---
 
-<BaseLayout title="About" description="About Ahmad Piraiee, strategist, venture builder, and execution partner.">
+<BaseLayout {...seo.about} schemaType="ProfilePage">
   <section class="about-profile about-profile-intro">
     <div class="profile-copy">
       <p class="eyebrow">/ 02 / About</p>

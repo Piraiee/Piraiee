@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import BackToTop from "../../components/BackToTop.astro";
 import { posts, writingCategories } from "../../data/posts";
+import { seo } from "../../data/seo";
 
 const formatDate = (date: string) => {
   const value = new Date(date + "T00:00:00");
@@ -11,7 +12,7 @@ const formatDate = (date: string) => {
 };
 ---
 
-<BaseLayout title="Writing" description="Startup, venture, and growth notes from Ahmad Piraiee.">
+<BaseLayout {...seo.writing} schemaType="CollectionPage">
   <aside class="writing-rail" aria-hidden="true">
     <div class="writing-rail-track" data-writing-rail-track>
       {Array.from({ length: 42 }).map((_, index) => <span data-rail-step={index}></span>)}

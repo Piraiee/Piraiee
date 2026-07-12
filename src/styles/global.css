@@ -374,7 +374,7 @@ button:hover {
 
 .metric-band {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .stat-card {
@@ -445,20 +445,57 @@ button:hover {
 }
 
 .trusted-logos {
-  align-items: center;
   display: grid;
-  gap: 44px;
+  gap: 0;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   opacity: 1;
+  width: 100%;
 }
 
-.trusted-logos img {
+.trusted-logo {
+  align-items: center;
+  border-block: 1px solid var(--line);
+  display: flex;
+  justify-content: center;
+  min-height: clamp(132px, 12vw, 168px);
+  min-width: 0;
+  padding: clamp(24px, 2.5vw, 34px);
+}
+
+.trusted-logo + .trusted-logo {
+  border-left: 1px solid var(--line);
+}
+
+.trusted-logo img {
   filter: none;
   image-rendering: auto;
-  max-height: clamp(44px, 5.5vh, 58px);
   object-fit: contain;
   opacity: 1;
-  width: 100%;
+  width: auto;
+}
+
+.trusted-logo:nth-child(1) img {
+  height: clamp(71px, 7.13vw, 92px);
+  max-width: 82%;
+}
+
+.trusted-logo:nth-child(2) img {
+  height: clamp(63px, 6.34vw, 82px);
+  max-width: 88%;
+}
+
+.trusted-logo:nth-child(3) img {
+  height: clamp(41px, 4.12vw, 53px);
+  max-width: 72%;
+}
+
+.trusted-logo:nth-child(4) img {
+  height: clamp(69px, 6.86vw, 89px);
+  max-width: 86%;
+}
+
+.trusted-logo img[alt^="Venture Cafe"] {
+  filter: brightness(0.74) contrast(1.18);
 }
 
 .split-section,
@@ -2557,7 +2594,6 @@ textarea {
   }
 
 
-  .metric-band,
   .trusted-logos,
   .deal-grid,
   .cards-grid,
@@ -2574,7 +2610,6 @@ textarea {
     font-size: clamp(34px, 8vw, 52px);
   }
 
-  .metric-band > div + div,
   .reading-list div + div {
     border-left: 0;
     border-top: 1px solid var(--line);
@@ -2584,12 +2619,9 @@ textarea {
     grid-template-columns: 1fr;
   }
 
-  .trusted-logos {
-    gap: 24px;
-  }
-
-  .trusted-logos img {
-    max-height: 46px;
+  .trusted-logo {
+    max-height: 190px;
+    padding: clamp(16px, 2.8vw, 28px);
   }
 
   .split-section,
@@ -3064,15 +3096,17 @@ textarea {
   }
 
   .trusted-logos {
-    gap: 26px 22px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     opacity: 1;
   }
 
-  .trusted-logos img {
-    filter: none;
-    max-height: 48px;
-    opacity: 1;
+  .trusted-logo {
+    min-height: clamp(132px, 32vw, 164px);
+    padding: clamp(20px, 6vw, 30px);
+  }
+
+  .trusted-logo:nth-child(odd) {
+    border-left: 0;
   }
 
   .process-list article {
@@ -3274,6 +3308,62 @@ textarea {
   .profile-stat-grid span {
     font-size: 11px;
     letter-spacing: 0.18em;
+  }
+}
+
+@media (max-width: 1100px) {
+  .metric-band {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .metric-band > div {
+    border-left: 0;
+    border-top: 0;
+  }
+
+  .metric-band > div:nth-child(even) {
+    border-left: 1px solid var(--line);
+  }
+
+  .metric-band > div:nth-child(n + 3) {
+    border-top: 1px solid var(--line);
+  }
+
+  .metric-content {
+    text-align: center;
+  }
+
+  .trusted-logos {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .trusted-logos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .metric-band > div {
+    min-height: 136px;
+    padding: 24px 12px;
+  }
+
+  .metric-content {
+    display: block;
+    width: 100%;
+  }
+
+  .metric-band strong {
+    font-size: clamp(40px, 13vw, 54px);
+  }
+
+  .metric-band span {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    line-height: 1.4;
+    margin-top: 14px;
+    max-width: none;
+    text-align: center;
   }
 }
 
@@ -3791,10 +3881,10 @@ button,
 .not-found {
   align-items: center;
   display: grid;
-  gap: clamp(56px, 8vw, 128px);
-  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+  gap: clamp(64px, 9vw, 144px);
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.86fr);
   min-height: calc(100svh - 96px);
-  padding: clamp(140px, 18vh, 210px) max(6vw, 28px) clamp(88px, 12vh, 140px);
+  padding: clamp(132px, 17vh, 196px) max(6vw, 28px) clamp(72px, 10vh, 120px);
 }
 
 .not-found-copy {
@@ -3803,11 +3893,11 @@ button,
 
 .not-found-copy h1 {
   font-family: "Manrope", sans-serif;
-  font-size: clamp(76px, 10vw, 154px);
-  font-weight: 600;
+  font-size: clamp(78px, 10vw, 148px);
+  font-weight: 500;
   letter-spacing: 0;
-  line-height: 0.9;
-  margin: 0 0 36px;
+  line-height: 0.92;
+  margin: 0 0 32px;
 }
 
 .not-found-copy > p:not(.eyebrow):not(.not-found-note) {
@@ -3830,99 +3920,69 @@ button,
   text-transform: uppercase;
 }
 
-.direction-mark {
-  aspect-ratio: 1 / 1;
+.not-found-signal {
+  align-content: end;
+  aspect-ratio: 4 / 5;
+  border: 1px solid rgba(11, 16, 32, 0.12);
+  border-radius: 22px;
+  display: grid;
+  grid-template-rows: 1fr auto auto;
   margin: auto;
-  max-width: 620px;
+  max-height: 620px;
+  max-width: 500px;
   overflow: hidden;
+  padding: clamp(28px, 4vw, 52px);
   position: relative;
   width: 100%;
 }
 
-.route,
-.direction-line {
+.not-found-signal::before {
   background: var(--ink);
-  display: block;
-  left: 50%;
+  content: "";
+  height: clamp(84px, 11vw, 150px);
   position: absolute;
-  transform-origin: bottom center;
+  right: clamp(28px, 4vw, 52px);
+  top: 0;
   width: 1px;
 }
 
-.route {
-  bottom: 47%;
-  height: 34%;
-  opacity: 0.48;
+.not-found-code {
+  align-self: end;
+  color: var(--ink);
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(104px, 14vw, 210px);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 0.8;
 }
 
-.route-one {
-  animation: route-one-align 1.3s cubic-bezier(0.22, 1, 0.36, 1) both;
-  transform: translateX(-104px) rotate(-38deg);
+.not-found-rule {
+  background: var(--ink);
+  display: block;
+  height: 1px;
+  margin: clamp(32px, 5vw, 56px) 0 18px;
+  position: relative;
+  width: 100%;
 }
 
-.route-two {
-  animation: route-two-align 1.45s 80ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  transform: translateX(-52px) rotate(-20deg);
-}
-
-.route-three {
-  animation: route-three-align 1.5s 140ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  transform: translateX(-1px);
-}
-
-.route-four {
-  animation: route-four-align 1.45s 80ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  transform: translateX(50px) rotate(20deg);
-}
-
-.route-five {
-  animation: route-five-align 1.3s cubic-bezier(0.22, 1, 0.36, 1) both;
-  transform: translateX(102px) rotate(38deg);
-}
-
-.direction-line {
-  animation: direction-reveal 900ms 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  bottom: 16%;
-  height: 39%;
-  transform: translateX(-1px);
-  transform-origin: top center;
-}
-
-.direction-arrow {
-  animation: direction-reveal 600ms 1.1s ease both;
+.not-found-rule::after {
   border-right: 1px solid var(--ink);
   border-top: 1px solid var(--ink);
-  bottom: 16%;
-  display: block;
-  height: 15px;
-  left: 50%;
+  content: "";
+  height: 10px;
   position: absolute;
-  transform: translate(-8px, 0) rotate(135deg);
-  width: 15px;
+  right: 1px;
+  top: -5px;
+  transform: rotate(45deg);
+  width: 10px;
 }
 
-@keyframes route-one-align {
-  from { opacity: 0; transform: translateX(-176px) rotate(-62deg); }
-}
-
-@keyframes route-two-align {
-  from { opacity: 0; transform: translateX(-112px) rotate(-42deg); }
-}
-
-@keyframes route-three-align {
-  from { opacity: 0; transform: translateX(34px) rotate(14deg); }
-}
-
-@keyframes route-four-align {
-  from { opacity: 0; transform: translateX(118px) rotate(42deg); }
-}
-
-@keyframes route-five-align {
-  from { opacity: 0; transform: translateX(184px) rotate(64deg); }
-}
-
-@keyframes direction-reveal {
-  from { opacity: 0; transform: translateX(-1px) scaleY(0); }
+.not-found-direction {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 @media (max-width: 760px) {
@@ -3948,16 +4008,24 @@ button,
     width: 100%;
   }
 
-  .direction-mark {
-    max-width: 390px;
+  .not-found-signal {
+    aspect-ratio: 5 / 3;
+    border-radius: 16px;
+    max-width: none;
     order: 2;
+    padding: 24px;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  .route,
-  .direction-line,
-  .direction-arrow {
-    animation: none;
+  .not-found-signal::before {
+    height: 56px;
+    right: 24px;
+  }
+
+  .not-found-code {
+    font-size: clamp(86px, 28vw, 124px);
+  }
+
+  .not-found-rule {
+    margin: 24px 0 14px;
   }
 }

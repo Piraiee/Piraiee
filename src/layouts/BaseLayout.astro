@@ -15,27 +15,96 @@ type Props = {
   title?: string;
   description?: string;
   image?: string;
+  imageAlt?: string;
   robots?: string;
+  schemaType?: "WebPage" | "ProfilePage" | "CollectionPage" | "BlogPosting";
+  publishedTime?: string;
+  modifiedTime?: string;
+  section?: string;
 };
 
 const {
   title = site.name,
   description = site.description,
   image = site.heroImage,
-  robots = "index,follow"
+  imageAlt = `${title} on ${site.domain}`,
+  robots = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+  schemaType = "WebPage",
+  publishedTime,
+  modifiedTime,
+  section
 } = Astro.props;
 
 const pageTitle = title === site.name ? `${site.name} | ${site.domain}` : `${title} | ${site.name}`;
 const canonical = new URL(Astro.url.pathname, site.url).toString();
+const absoluteImage = new URL(image, site.url).toString();
 const pathname = Astro.url.pathname;
 
-const jsonLd = {
-  "@context": "https://schema.org",
+const personId = `${site.url}/#person`;
+const websiteId = `${site.url}/#website`;
+const webpageId = `${canonical}#webpage`;
+const primaryImageId = `${canonical}#primaryimage`;
+const person = {
   "@type": "Person",
+  "@id": personId,
   name: site.name,
   url: site.url,
+  image: new URL("/assets/brand/ahmad-piraiee-portrait-new.png", site.url).toString(),
   sameAs: site.socials.map((item) => item.href),
-  jobTitle: "Founder, startup advisor, and marketing strategist"
+  jobTitle: "Strategist, venture builder, and execution partner"
+};
+const website = {
+  "@type": "WebSite",
+  "@id": websiteId,
+  url: site.url,
+  name: site.domain,
+  description: site.description,
+  publisher: { "@id": personId },
+  inLanguage: "en"
+};
+const primaryImage = {
+  "@type": "ImageObject",
+  "@id": primaryImageId,
+  url: absoluteImage,
+  contentUrl: absoluteImage,
+  width: 1200,
+  height: 630,
+  caption: imageAlt
+};
+const webPage = {
+  "@type": schemaType === "BlogPosting" ? "WebPage" : schemaType,
+  "@id": webpageId,
+  url: canonical,
+  name: pageTitle,
+  headline: title,
+  description,
+  image: { "@id": primaryImageId },
+  primaryImageOfPage: { "@id": primaryImageId },
+  inLanguage: "en",
+  isPartOf: { "@id": websiteId },
+  author: { "@id": personId },
+  ...(schemaType === "ProfilePage" ? { mainEntity: { "@id": personId } } : {})
+};
+const article = schemaType === "BlogPosting" ? {
+  "@type": "BlogPosting",
+  "@id": `${canonical}#article`,
+  url: canonical,
+  headline: title,
+  description,
+  image: { "@id": primaryImageId },
+  datePublished: publishedTime,
+  dateModified: modifiedTime || publishedTime,
+  articleSection: section,
+  inLanguage: "en",
+  mainEntityOfPage: { "@id": webpageId },
+  author: { "@id": personId },
+  publisher: { "@id": personId }
+} : null;
+const graph: unknown[] = [website, person, primaryImage, webPage];
+if (article) graph.push(article);
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": graph
 };
 ---
 
@@ -47,21 +116,33 @@ const jsonLd = {
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
+    <meta name="author" content={site.name} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0B0D10" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={schemaType === "BlogPosting" ? "article" : "website"} />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content={site.domain} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={image} />
+    <meta property="og:image" content={absoluteImage} />
+    <meta property="og:image:secure_url" content={absoluteImage} />
+    <meta property="og:image:type" content={absoluteImage.endsWith(".jpg") || absoluteImage.endsWith(".jpeg") ? "image/jpeg" : "image/png"} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    {schemaType === "BlogPosting" && publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {schemaType === "BlogPosting" && (modifiedTime || publishedTime) && <meta property="article:modified_time" content={modifiedTime || publishedTime} />}
+    {schemaType === "BlogPosting" && section && <meta property="article:section" content={section} />}
+    {schemaType === "BlogPosting" && <meta property="article:author" content={site.url} />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={image} />
+    <meta name="twitter:image" content={absoluteImage} />
+    <meta name="twitter:image:alt" content={imageAlt} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>

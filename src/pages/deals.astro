@@ -2,9 +2,10 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BackToTop from "../components/BackToTop.astro";
 import { deals } from "../data/deals";
+import { seo } from "../data/seo";
 ---
 
-<BaseLayout title="Deals" description="Curated startup and operator deals from Ahmad Piraiee.">
+<BaseLayout {...seo.deals} schemaType="CollectionPage">
   <section class="page-hero deals-hero">
     <p class="eyebrow">/ Deals</p>
     <h1>Curated offers for founders, operators, and startup teams.</h1>

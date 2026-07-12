@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BackToTop from "../components/BackToTop.astro";
 import { books } from "../data/books";
+import { seo } from "../data/seo";
 
 const publicationYear = (value: string) => {
   if (value === "n.d.") return value;
@@ -10,7 +11,7 @@ const publicationYear = (value: string) => {
 };
 ---
 
-<BaseLayout title="Reading" description="Books that shape Ahmad Piraiee's thinking on startups, AI, strategy, technology, and human behavior.">
+<BaseLayout {...seo.reading} schemaType="CollectionPage">
   <section class="page-hero books-hero">
     <p class="eyebrow">/ Reading</p>
     <h1>Books that shaped my thinking.</h1>

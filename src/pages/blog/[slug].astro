@@ -37,7 +37,15 @@ const cleanContent = (value: string) => {
 const articleContent = cleanContent(post.content);
 ---
 
-<BaseLayout title={post.title} description={post.excerpt}>
+<BaseLayout
+  title={post.title}
+  description={post.excerpt}
+  image={post.featuredImage}
+  imageAlt={`${post.title} — featured image`}
+  schemaType="BlogPosting"
+  publishedTime={`${post.date}T00:00:00+02:00`}
+  section={post.category}
+>
   <article class="article">
     <a class="eyebrow article-category" href={`/blog/?category=${encodeURIComponent(post.category)}`}>{post.category}</a>
     <h1>{post.title}</h1>

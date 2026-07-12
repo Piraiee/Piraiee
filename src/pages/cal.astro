@@ -20,6 +20,8 @@ const errorMessage = error === "invalid"
   ? "That password is not correct. Please try again."
   : error === "setup"
     ? "Private scheduling is not configured yet."
+    : error === "delivery"
+      ? "Access could not be confirmed right now. Please try again shortly."
     : "";
 ---
 
