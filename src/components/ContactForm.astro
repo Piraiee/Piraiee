@@ -67,7 +67,7 @@ const timelines = ["This week", "This month", "Next 3 months", "Just exploring"]
         method: "POST",
         body: new FormData(contactForm)
       });
-      const result = await response.json();
+      const result = await response.json() as { ok?: boolean; error?: string };
       if (!response.ok || !result.ok) throw new Error(result.error || "Unable to send your message.");
       contactForm.reset();
       if (contactStatus) contactStatus.textContent = "";

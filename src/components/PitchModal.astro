@@ -168,7 +168,7 @@ const stages = ["Idea", "MVP", "Early users", "Revenue", "Scaling"];
       const fullName = `${formData.get("first_name") || ""} ${formData.get("last_name") || ""}`.trim();
       formData.set("name", fullName);
       const response = await fetch(pitchForm.action, { method: "POST", body: formData });
-      const result = await response.json();
+      const result = await response.json() as { ok?: boolean; error?: string };
       if (!response.ok || !result.ok) throw new Error(result.error || "Unable to send your request.");
       pitchForm.reset();
       if (pitchStatus) pitchStatus.textContent = "";

@@ -3,6 +3,7 @@ import {
   getCalCookieName,
   isValidCalSession
 } from "../lib/calAuth";
+import { env } from "cloudflare:workers";
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
@@ -12,7 +13,6 @@ import "../styles/global.css";
 
 export const prerender = false;
 
-const env = Astro.locals.runtime?.env ?? {};
 const session = Astro.cookies.get(getCalCookieName())?.value;
 const isUnlocked = await isValidCalSession(session, env.CAL_AUTH_SECRET || "");
 const error = Astro.url.searchParams.get("error");

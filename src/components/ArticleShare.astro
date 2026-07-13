@@ -56,8 +56,9 @@ const { title, slug } = Astro.props;
         })
           .then(async (response) => {
             if (!response.ok) throw new Error("Short link unavailable");
-            const data = await response.json();
-            return data.shortLink as string;
+            const data = await response.json() as { shortLink?: string };
+            if (!data.shortLink) throw new Error("Short link unavailable");
+            return data.shortLink;
           })
           .catch(() => canonical);
       }

@@ -1,13 +1,13 @@
 import type { APIRoute } from "astro";
+import { env } from "cloudflare:workers";
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request, locals }) => {
-  const env = locals.runtime?.env ?? {};
+export const POST: APIRoute = async ({ request }) => {
   const allowedOrigin = env.ALLOWED_ORIGIN || "https://piraiee.com";
   const origin = request.headers.get("origin");
 
-  if (origin && origin !== allowedOrigin && !isLocalOrigin(origin)) {
+  if (origin && !isAllowedOrigin(origin, request.url, allowedOrigin)) {
     return json({ error: "Invalid origin" }, 403);
   }
 
@@ -79,6 +79,17 @@ function isLocalOrigin(origin: string) {
   try {
     const hostname = new URL(origin).hostname;
     return hostname === "localhost" || hostname === "127.0.0.1";
+  } catch {
+    return false;
+  }
+}
+
+function isAllowedOrigin(origin: string, requestUrl: string, configuredOrigin: string) {
+  try {
+    const normalizedOrigin = new URL(origin).origin;
+    return normalizedOrigin === new URL(requestUrl).origin
+      || normalizedOrigin === new URL(configuredOrigin).origin
+      || isLocalOrigin(origin);
   } catch {
     return false;
   }

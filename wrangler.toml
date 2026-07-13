@@ -1,11 +1,21 @@
-name = "piraiee-com"
-pages_build_output_dir = "dist"
-compatibility_date = "2026-07-09"
+name = "piraiee-com-worker"
+main = "@astrojs/cloudflare/entrypoints/server"
+compatibility_date = "2026-07-13"
+workers_dev = true
+preview_urls = true
+routes = [
+  { pattern = "piraiee.com", custom_domain = true },
+  { pattern = "www.piraiee.com", custom_domain = true }
+]
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
 
 [vars]
 ALLOWED_ORIGIN = "https://piraiee.com"
 
-# Add these in the Cloudflare Pages dashboard, not in git:
+# Add these with `wrangler secret bulk .dev.vars`; never commit their values:
 # GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/.../exec"
 # GOOGLE_SCRIPT_SECRET = "..."
 # TURNSTILE_SECRET_KEY = "..."

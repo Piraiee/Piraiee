@@ -151,7 +151,7 @@ const statements = [
       formData.set("name", fullName);
       formData.set("message", String(formData.get("testimonial") || "Mentoring session feedback submitted."));
       const response = await fetch(feedbackForm.action, { method: "POST", body: formData });
-      const result = await response.json();
+      const result = await response.json() as { ok?: boolean; error?: string };
       if (!response.ok || !result.ok) throw new Error(result.error || "Unable to send your feedback.");
       feedbackForm.reset();
       if (feedbackStatus) feedbackStatus.textContent = "";

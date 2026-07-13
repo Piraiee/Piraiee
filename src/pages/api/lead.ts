@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { env } from "cloudflare:workers";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phonePattern = /^\+?[0-9 ()-]{7,20}$/;
@@ -6,12 +7,11 @@ const maxUploadBytes = 4 * 1024 * 1024;
 const uploadFieldName = "pitch_deck_file";
 const allowedUploadExtensions = new Set(["pdf", "ppt", "pptx", "key", "doc", "docx", "png", "jpg", "jpeg"]);
 
-export const POST: APIRoute = async ({ request, locals }) => {
-  const env = locals.runtime?.env ?? {};
+export const POST: APIRoute = async ({ request }) => {
   const allowedOrigin = env.ALLOWED_ORIGIN || "https://piraiee.com";
   const origin = request.headers.get("origin");
 
-  if (origin && origin !== allowedOrigin && !isLocalOrigin(origin)) {
+  if (origin && !isAllowedOrigin(origin, request.url, allowedOrigin)) {
     return json({ ok: false, error: "Invalid origin" }, 403);
   }
 
@@ -149,6 +149,17 @@ function isLocalOrigin(origin: string) {
   try {
     const hostname = new URL(origin).hostname;
     return hostname === "localhost" || hostname === "127.0.0.1";
+  } catch {
+    return false;
+  }
+}
+
+function isAllowedOrigin(origin: string, requestUrl: string, configuredOrigin: string) {
+  try {
+    const normalizedOrigin = new URL(origin).origin;
+    return normalizedOrigin === new URL(requestUrl).origin
+      || normalizedOrigin === new URL(configuredOrigin).origin
+      || isLocalOrigin(origin);
   } catch {
     return false;
   }

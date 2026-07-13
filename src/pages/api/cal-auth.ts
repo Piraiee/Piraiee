@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { env } from "cloudflare:workers";
 import {
   calCookieOptions,
   createCalSession,
@@ -6,8 +7,7 @@ import {
   timingSafeEqual
 } from "../../lib/calAuth";
 
-export const POST: APIRoute = async ({ request, locals, cookies, redirect }) => {
-  const env = locals.runtime?.env ?? {};
+export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   const expectedPassword = env.CAL_PAGE_PASSWORD;
   const authSecret = env.CAL_AUTH_SECRET;
 

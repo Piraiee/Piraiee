@@ -137,7 +137,7 @@ const nextSteps = [
         method: "POST",
         body: new FormData(clarityForm)
       });
-      const result = await response.json();
+      const result = await response.json() as { ok?: boolean; error?: string };
       if (!response.ok || !result.ok) throw new Error(result.error || "Unable to send your request.");
       clarityForm.reset();
       if (clarityStatus) clarityStatus.textContent = "";
