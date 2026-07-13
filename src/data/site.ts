@@ -16,10 +16,10 @@ export const site = {
 };
 
 export const partnerLogos = [
-  { label: "CIC", src: "/assets/logos/cic.png" },
-  { label: "Techstars Startup Digest", src: "/assets/logos/techstars-startup-digest.png" },
-  { label: "Venture Cafe Global Institute", src: "/assets/logos/venture-cafe-global-institute.png" },
-  { label: "Startup Grind", src: "/assets/logos/startupgrind.png" }
+  { label: "CIC", src: "/assets/logos/cic.png", width: 360, height: 120 },
+  { label: "Techstars Startup Digest", src: "/assets/logos/techstars-startup-digest.png", width: 360, height: 120 },
+  { label: "Venture Cafe Global Institute", src: "/assets/logos/venture-cafe-global-institute.png", width: 160, height: 155 },
+  { label: "Startup Grind", src: "/assets/logos/startupgrind.png", width: 360, height: 120 }
 ];
 
 export const navItems = [

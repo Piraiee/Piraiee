@@ -78,7 +78,15 @@ const homeBooks = [
         {
           partnerLogos.map((logo) => (
             <div class="trusted-logo">
-              <img src={logo.src} alt={logo.label} />
+              <img
+                src={logo.src}
+                alt={logo.label}
+                width={logo.width}
+                height={logo.height}
+                loading="lazy"
+                decoding="async"
+                fetchpriority="low"
+              />
             </div>
           ))
         }
