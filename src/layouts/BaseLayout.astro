@@ -21,6 +21,8 @@ type Props = {
   publishedTime?: string;
   modifiedTime?: string;
   section?: string;
+  mobileBackHref?: string;
+  mobileBackLabel?: string;
 };
 
 const {
@@ -32,7 +34,9 @@ const {
   schemaType = "WebPage",
   publishedTime,
   modifiedTime,
-  section
+  section,
+  mobileBackHref,
+  mobileBackLabel = "Back"
 } = Astro.props;
 
 const pageTitle = title === site.name ? `${site.name} | ${site.domain}` : `${title} | ${site.name}`;
@@ -148,6 +152,14 @@ const jsonLd = {
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header" data-header>
+      {mobileBackHref && (
+        <a class="mobile-header-back" href={mobileBackHref} aria-label={mobileBackLabel}>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 12H4M10 6l-6 6 6 6" />
+          </svg>
+          <span>{mobileBackLabel}</span>
+        </a>
+      )}
       <div class="nav-shell">
         <div class="brand wordmark header-wordmark" aria-label="piraiee.com">
           <span class="wordmark-slash" aria-hidden="true">/</span><span class="wordmark-type" aria-hidden="true">piraiee.com</span>

@@ -17,7 +17,7 @@ export const POST: APIRoute = async ({ request, locals, cookies, redirect }) => 
 
   const origin = request.headers.get("origin");
   const requestUrl = new URL(request.url);
-  if (origin && new URL(origin).host !== requestUrl.host) {
+  if (origin && !isSameOrigin(origin, requestUrl)) {
     return new Response("Invalid origin", { status: 403 });
   }
 
@@ -62,3 +62,15 @@ export const POST: APIRoute = async ({ request, locals, cookies, redirect }) => 
   cookies.set(getCalCookieName(), await createCalSession(authSecret), calCookieOptions());
   return redirect("/cal", 303);
 };
+
+function isSameOrigin(origin: string, requestUrl: URL) {
+  if (origin === "null") {
+    return requestUrl.hostname === "localhost" || requestUrl.hostname === "127.0.0.1";
+  }
+
+  try {
+    return new URL(origin).origin === requestUrl.origin;
+  } catch {
+    return false;
+  }
+}

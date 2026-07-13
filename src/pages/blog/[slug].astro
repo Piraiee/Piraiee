@@ -45,6 +45,8 @@ const articleContent = cleanContent(post.content);
   schemaType="BlogPosting"
   publishedTime={`${post.date}T00:00:00+02:00`}
   section={post.category}
+  mobileBackHref="/blog/"
+  mobileBackLabel="Back to writing"
 >
   <article class="article">
     <a class="eyebrow article-category" href={`/blog/?category=${encodeURIComponent(post.category)}`}>{post.category}</a>

@@ -44,7 +44,10 @@ const errorMessage = error === "invalid"
             <p class="cal-kicker">Private scheduling</p>
             <h1>Find a time that works.</h1>
           </div>
-          <a href="/" aria-label="Return to piraiee.com">piraiee.com</a>
+          <a class="cal-back-home" href="/">
+            <span aria-hidden="true">←</span>
+            <span>Back to home</span>
+          </a>
         </header>
         <p class="cal-intro">Choose a 30-minute or one-hour meeting. Availability is shown in your timezone.</p>
         <section class="cal-embed-frame" aria-label="Meeting availability">
@@ -63,8 +66,20 @@ const errorMessage = error === "invalid"
           <form action="/api/cal-auth" method="post" class="cal-lock-form">
             <label for="cal-password">Access code</label>
             <div class="cal-password-field">
-              <input id="cal-password" name="password" type="password" autocomplete="current-password" required autofocus aria-describedby={errorMessage ? "cal-error" : undefined} />
-              <button type="submit">Continue <span aria-hidden="true">↗</span></button>
+              <div class="cal-password-input">
+                <input id="cal-password" name="password" type="password" autocomplete="current-password" required autofocus aria-describedby={errorMessage ? "cal-error" : undefined} />
+                <button class="cal-password-toggle" type="button" aria-label="Show access code" aria-pressed="false" title="Show access code">
+                  <svg class="cal-eye-show" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+                    <circle cx="12" cy="12" r="2.75" />
+                  </svg>
+                  <svg class="cal-eye-hide" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 3l18 18" />
+                    <path d="M10.6 6.15A10.7 10.7 0 0 1 12 6c6 0 9.5 6 9.5 6a16.7 16.7 0 0 1-2.2 2.85M6.1 6.1C3.75 7.75 2.5 12 2.5 12s3.5 6 9.5 6a9.7 9.7 0 0 0 3.05-.48" />
+                  </svg>
+                </button>
+              </div>
+              <button class="cal-submit" type="submit">Continue <span aria-hidden="true">↗</span></button>
             </div>
             {errorMessage && <p class="cal-error" id="cal-error" role="alert">{errorMessage}</p>}
           </form>
@@ -122,6 +137,28 @@ const errorMessage = error === "invalid"
           callback: function () {
             window.location.assign("https://piraiee.com/");
           }
+        });
+
+        // Cal.com calculates an inline iframe height for the current layout but
+        // does not reliably shrink it after crossing its mobile breakpoint.
+        window.matchMedia("(max-width: 1024px)").addEventListener("change", function () {
+          window.location.reload();
+        });
+      </script>
+    )}
+    {!isUnlocked && (
+      <script is:inline>
+        const passwordInput = document.querySelector("#cal-password");
+        const passwordToggle = document.querySelector(".cal-password-toggle");
+
+        passwordToggle?.addEventListener("click", () => {
+          if (!(passwordInput instanceof HTMLInputElement) || !(passwordToggle instanceof HTMLButtonElement)) return;
+          const willShow = passwordInput.type === "password";
+          passwordInput.type = willShow ? "text" : "password";
+          passwordToggle.setAttribute("aria-pressed", String(willShow));
+          passwordToggle.setAttribute("aria-label", willShow ? "Hide access code" : "Show access code");
+          passwordToggle.title = willShow ? "Hide access code" : "Show access code";
+          passwordInput.focus({ preventScroll: true });
         });
       </script>
     )}

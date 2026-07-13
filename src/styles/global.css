@@ -111,6 +111,10 @@ textarea {
   z-index: 30;
 }
 
+.mobile-header-back {
+  display: none;
+}
+
 .nav-shell {
   align-items: center;
   display: grid;
@@ -984,6 +988,7 @@ p {
 .home-content-block > .writing-section-action { padding-top: 0; }
 .home-content-block > .reading-section-action { padding-top: 8px; }
 .home-book-list .book-row { min-height: 112px; padding-block: 25px; }
+.home-book-list .book-row > div { min-width: 0; }
 .book-row-heading { align-items: baseline; display: flex; gap: 24px; min-width: 0; }
 .home-book-list .book-row h2 { flex: 0 0 auto; margin: 0; }
 .home-book-list .book-row-heading p { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -2118,27 +2123,33 @@ textarea {
 .article-share-actions {
   align-items: center;
   display: flex;
-  gap: 8px;
+  gap: 12px;
 }
 
 .article-share-actions button {
   align-items: center;
   background: transparent;
   border: 0;
+  border-radius: 0;
+  box-shadow: none;
   color: var(--muted);
   cursor: pointer;
   display: inline-flex;
-  height: 38px;
+  height: 40px;
   justify-content: center;
-  padding: 0;
+  min-height: 40px;
+  min-width: 40px;
+  padding: 8px;
   transition: color 180ms ease, transform 180ms ease;
-  width: 38px;
+  width: 40px;
 }
 
 .article-share-actions button:hover,
 .article-share-actions button:focus-visible {
+  background: transparent;
+  box-shadow: none;
   color: var(--ink);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .article-share-actions button:focus-visible {
@@ -2152,8 +2163,8 @@ textarea {
 
 .article-share-actions svg {
   fill: currentColor;
-  height: 18px;
-  width: 18px;
+  height: 20px;
+  width: 20px;
 }
 
 .article-share-status {
@@ -2343,6 +2354,41 @@ textarea {
     display: flex;
     justify-content: flex-end;
     padding: 12px;
+  }
+
+  .mobile-header-back {
+    align-items: center;
+    background: rgba(247, 248, 251, 0.74);
+    border: 1px solid rgba(11, 16, 32, 0.09);
+    color: var(--ink);
+    display: inline-flex;
+    gap: 8px;
+    left: 12px;
+    min-height: 62px;
+    padding: 0 16px;
+    position: fixed;
+    text-decoration: none;
+    top: 12px;
+    backdrop-filter: blur(20px) saturate(1.24);
+  }
+
+  .mobile-header-back svg {
+    fill: none;
+    height: 26px;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+    width: 26px;
+  }
+
+  .mobile-header-back span {
+    font-size: 13px;
+    font-weight: 650;
+  }
+
+  .site-header.menu-open .mobile-header-back {
+    display: none;
   }
 
   .nav-shell {
@@ -2751,6 +2797,11 @@ textarea {
     white-space: nowrap;
   }
 
+  .home-book-list .book-row-heading p {
+    max-width: 100%;
+    white-space: normal;
+  }
+
   .book-row a {
     justify-self: start;
   }
@@ -2966,7 +3017,7 @@ textarea {
   }
 
   .article-share-actions {
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 100%;
   }
 
@@ -3621,12 +3672,44 @@ button,
   margin: 0;
 }
 
-.cal-header > a,
 .cal-domain {
   color: #6d727d;
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
+}
+
+.cal-back-home {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(11, 16, 32, 0.16);
+  border-radius: 999px;
+  color: #0b1020;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 700;
+  gap: 8px;
+  min-height: 42px;
+  padding: 9px 16px;
+  text-decoration: none;
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.cal-back-home:hover {
+  background: #fff;
+  border-color: #0b1020;
+  transform: translateX(-2px);
+}
+
+.cal-back-home:focus-visible {
+  box-shadow: 0 0 0 3px rgba(11, 16, 32, 0.12);
+  outline: 2px solid #0b1020;
+  outline-offset: 2px;
+}
+
+.cal-back-home > span:first-child {
+  font-size: 18px;
+  line-height: 1;
 }
 
 .cal-kicker {
@@ -3649,12 +3732,10 @@ button,
   border: 1px solid rgba(11, 16, 32, 0.12);
   border-radius: 22px;
   box-shadow: 0 24px 70px rgba(32, 43, 65, 0.1);
-  min-height: 720px;
   overflow: hidden;
 }
 
 .cal-embed {
-  min-height: 720px;
   width: 100%;
 }
 
@@ -3704,6 +3785,11 @@ button,
   grid-template-columns: minmax(0, 1fr) auto;
 }
 
+.cal-password-input {
+  min-width: 0;
+  position: relative;
+}
+
 .cal-password-field input {
   background: #fff;
   border: 1px solid rgba(11, 16, 32, 0.18);
@@ -3711,7 +3797,8 @@ button,
   color: #0b1020;
   font: inherit;
   min-width: 0;
-  padding: 15px 17px;
+  padding: 15px 52px 15px 17px;
+  width: 100%;
 }
 
 .cal-password-field input:focus {
@@ -3720,7 +3807,7 @@ button,
   outline: none;
 }
 
-.cal-password-field button {
+.cal-password-field .cal-submit {
   background: #0b1020;
   border: 1px solid #0b1020;
   border-radius: 12px;
@@ -3731,8 +3818,51 @@ button,
   padding: 15px 22px;
 }
 
-.cal-password-field button:hover {
+.cal-password-field .cal-submit:hover {
   transform: translateY(-1px);
+}
+
+.cal-password-field .cal-password-toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: #6d727d;
+  cursor: pointer;
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  padding: 0;
+  position: absolute;
+  right: 7px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+}
+
+.cal-password-toggle:hover {
+  background: rgba(11, 16, 32, 0.06);
+  color: #0b1020;
+}
+
+.cal-password-toggle:focus-visible {
+  box-shadow: 0 0 0 3px rgba(11, 16, 32, 0.12);
+  outline: 2px solid #0b1020;
+  outline-offset: 1px;
+}
+
+.cal-password-toggle svg {
+  height: 21px;
+  width: 21px;
+}
+
+.cal-eye-hide,
+.cal-password-toggle[aria-pressed="true"] .cal-eye-show {
+  display: none;
+}
+
+.cal-password-toggle[aria-pressed="true"] .cal-eye-hide {
+  display: block;
 }
 
 .cal-error {
@@ -3756,8 +3886,9 @@ button,
     gap: 18px;
   }
 
-  .cal-header > a {
+  .cal-back-home {
     grid-row: 1;
+    justify-self: start;
   }
 
   .cal-header > div {
@@ -3767,11 +3898,6 @@ button,
   .cal-header h1,
   .cal-lock-panel h1 {
     font-size: clamp(40px, 13vw, 58px);
-  }
-
-  .cal-embed-frame,
-  .cal-embed {
-    min-height: 780px;
   }
 
   .cal-lock-shell {
@@ -3788,7 +3914,7 @@ button,
     grid-template-columns: 1fr;
   }
 
-  .cal-password-field button {
+  .cal-password-field .cal-submit {
     min-height: 54px;
     width: 100%;
   }
