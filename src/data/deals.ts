@@ -13,6 +13,26 @@ const defaultDealImage =
 
 export const deals: Deal[] = [
   {
+    slug: "manychat",
+    name: "Manychat",
+    category: "Chat Marketing",
+    summary: "50% off your first two months of Manychat Pro.",
+    details:
+      "Automate conversations, lead capture, and customer engagement across Instagram, WhatsApp, TikTok, and Messenger while saving 50% on your first two months of Pro.",
+    href: "https://manychat.partnerlinks.io/o97t6dxkhfxu-wki14",
+    featuredImage: defaultDealImage
+  },
+  {
+    slug: "dify",
+    name: "Dify",
+    category: "AI Workflows",
+    summary: "Build and deploy production-ready agentic workflows.",
+    details:
+      "Create AI agents, visual workflows, and knowledge pipelines in one collaborative platform, then deploy them through Dify Cloud, a private environment, or a self-hosted setup.",
+    href: "https://affiliate.dify.ai/ifomitofn80k-nusw0l",
+    featuredImage: defaultDealImage
+  },
+  {
     slug: "bolt-for-business",
     name: "Bolt for Business",
     category: "Mobility",
