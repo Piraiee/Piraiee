@@ -11,7 +11,7 @@ export type Deal = {
 const defaultDealImage =
   "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1400&q=80";
 
-export const deals: Deal[] = [
+const dealCatalog: Deal[] = [
   {
     slug: "manychat",
     name: "Manychat",
@@ -513,3 +513,28 @@ export const deals: Deal[] = [
     featuredImage: defaultDealImage
   }
 ];
+
+const prioritizedDealSlugs = [
+  "bolt-for-business",
+  "cic-warsaw",
+  "pandadoc",
+  "deel",
+  "elevenlabs"
+] as const;
+
+const dealPriority = new Map<string, number>(
+  prioritizedDealSlugs.map((slug, index) => [slug, index] as const)
+);
+
+export const deals = [...dealCatalog].sort((a, b) => {
+  const aPriority = dealPriority.get(a.slug);
+  const bPriority = dealPriority.get(b.slug);
+
+  if (aPriority !== undefined || bPriority !== undefined) {
+    if (aPriority === undefined) return 1;
+    if (bPriority === undefined) return -1;
+    return aPriority - bPriority;
+  }
+
+  return a.name.localeCompare(b.name, "en", { sensitivity: "base" });
+});
