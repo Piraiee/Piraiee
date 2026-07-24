@@ -333,16 +333,6 @@ const dealCatalog: Deal[] = [
     featuredImage: defaultDealImage
   },
   {
-    slug: "webydo",
-    name: "Webydo",
-    category: "Web Design",
-    summary: "Professional website building for designers.",
-    details:
-      "Design and publish responsive business websites with a visual workflow built for agencies, designers, and client work.",
-    href: "https://partners.webydo.com/aa1r1yz1xfdn",
-    featuredImage: defaultDealImage
-  },
-  {
     slug: "whatconverts",
     name: "WhatConverts",
     category: "Attribution",
